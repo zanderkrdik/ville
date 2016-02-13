@@ -16,47 +16,52 @@ var paths = {
     html: 'src/*.html'
 };
 
-gulp.task('clean', () => {
-    return gulp.src(paths.dest, { read: false }) // much faster 
-   .pipe(rimraf());
-});
+gulp.task('clean', () =>
+    gulp
+        .src(paths.dest, { read: false }) // much faster 
+        .pipe(rimraf())
+    );
 
-gulp.task('html', ['clean'], () => {
-    return gulp.src(paths.html)
+gulp.task('html', ['clean'], () =>
+    gulp
+        .src(paths.html)
         .pipe(gulp.dest(paths.dest))
-        .pipe(browsersync.stream());
-});
+        .pipe(browsersync.stream())
+    );
 
-gulp.task('sass', ['clean'], () => {
-    return gulp.src(paths.scss)
+gulp.task('sass', ['clean'], () =>
+    gulp
+        .src(paths.scss)
         .pipe(sass({ includePaths: ['scss'] }))
         .pipe(gulp.dest(paths.dest + 'css'))
-        .pipe(browsersync.stream());
-});
+        .pipe(browsersync.stream())
+    );
 
-gulp.task('images',['clean'], () => {
+gulp.task('images', ['clean'], () => 
     
     //   var spriteOutput;
  
-	// spriteOutput = gulp.src(paths.dest + 'css/*.css')
-	// 	.pipe(sprite({
+    // spriteOutput = gulp.src(paths.dest + 'css/*.css')
+    // 	.pipe(sprite({
     //         baseUrl:         "./src/img",
     //         spriteSheetName: "sprite.png"
-	// 	}));
+    // 	}));
  
     // spriteOutput.css.pipe(gulp.dest(paths.dest + 'css'));
     // spriteOutput.img.pipe(gulp.dest("./build"));
     
     
-    return gulp.src(paths.images)
-        .pipe(gulp.dest(paths.dest + 'img'));
-});
+    gulp
+        .src(paths.images)
+        .pipe(gulp.dest(paths.dest + 'img'))
+    );
 
-gulp.task('js', ['clean'], () => {
-    return gulp.src(paths.js)
+gulp.task('js', ['clean'], () =>
+    gulp
+        .src(paths.js)
         .pipe(gulp.dest(paths.dest))
-        .pipe(browsersync.stream());
-});
+        .pipe(browsersync.stream())
+    );
 
 // Wrapup Function
 gulp.task('build', ['clean', 'html', 'sass', 'images', 'js']);
@@ -67,14 +72,14 @@ gulp.task('browser-sync', ['build'], () => {
         server: {
             baseDir: paths.dest
         }
-    });
+    })
 });
 
 gulp.task('watch', ['build'], () => {
     gulp.watch(paths.js, ['js']);
     gulp.watch(paths.scss, ['sass']);
     gulp.watch(paths.images, ['images']);
-    gulp.watch(paths.html, ['html']);
+    gulp.watch(paths.html, ['html'])
 });
 
 
