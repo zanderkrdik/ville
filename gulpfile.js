@@ -1,7 +1,8 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var browsersync = require("browser-sync").create();
-var del = require('del');
+var rimraf = require('gulp-rimraf');
+var sprite = require('gulp-sprite-generator');
 
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -16,34 +17,52 @@ var paths = {
 };
 
 gulp.task('clean', () => {
-    del([paths.dest]);
+    return gulp.src(paths.dest, { read: false }) // much faster 
+   .pipe(rimraf());
 });
 
-gulp.task('html', () => {
-    gulp.src(paths.html)
+gulp.task('html', ['clean'], () => {
+    return gulp.src(paths.html)
         .pipe(gulp.dest(paths.dest))
         .pipe(browsersync.stream());
 });
 
-gulp.task('sass', () => {
-    gulp.src(paths.scss)
+gulp.task('sass', ['clean'], () => {
+    return gulp.src(paths.scss)
         .pipe(sass({ includePaths: ['scss'] }))
         .pipe(gulp.dest(paths.dest + 'css'))
         .pipe(browsersync.stream());
 });
 
-gulp.task('images', () => {
-    gulp.src(paths.images)
+gulp.task('images',['clean'], () => {
+    
+    //   var spriteOutput;
+ 
+	// spriteOutput = gulp.src(paths.dest + 'css/*.css')
+	// 	.pipe(sprite({
+    //         baseUrl:         "./src/img",
+    //         spriteSheetName: "sprite.png"
+	// 	}));
+ 
+    // spriteOutput.css.pipe(gulp.dest(paths.dest + 'css'));
+    // spriteOutput.img.pipe(gulp.dest("./build"));
+    
+    
+    return gulp.src(paths.images)
         .pipe(gulp.dest(paths.dest + 'img'));
 });
 
-gulp.task('js', () => {
-    gulp.src(paths.js)
+gulp.task('js', ['clean'], () => {
+    return gulp.src(paths.js)
         .pipe(gulp.dest(paths.dest))
         .pipe(browsersync.stream());
 });
 
-gulp.task('browser-sync', () => {
+// Wrapup Function
+gulp.task('build', ['clean', 'html', 'sass', 'images', 'js']);
+
+
+gulp.task('browser-sync', ['build'], () => {
     browsersync.init({
         server: {
             baseDir: paths.dest
@@ -51,7 +70,7 @@ gulp.task('browser-sync', () => {
     });
 });
 
-gulp.task('watch', () => {
+gulp.task('watch', ['build'], () => {
     gulp.watch(paths.js, ['js']);
     gulp.watch(paths.scss, ['sass']);
     gulp.watch(paths.images, ['images']);
@@ -59,7 +78,6 @@ gulp.task('watch', () => {
 });
 
 
-gulp.task('build', ['clean', 'html', 'sass', 'images', 'js']);
 gulp.task('default', ['build', 'browser-sync', 'watch']);
 
 
