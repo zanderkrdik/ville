@@ -1,25 +1,25 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var browsersync = require("browser-sync").create();
+var del = require('del');
 
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
-var del = require('del');
 
 var paths = {
-    js: ['src/*.js'],
+    dest: 'build/',
+    js: 'src/*.js',
     scss: 'src/scss/*.scss',
     images: 'src/img/**/*',
-    html: 'src/*.html',
-    dest: 'build/'
+    html: 'src/*.html'
 };
 
 gulp.task('clean', () => {
     del([paths.dest]);
 });
 
-gulp.task('html', [], () => {
+gulp.task('html', () => {
     gulp.src(paths.html)
         .pipe(gulp.dest(paths.dest))
         .pipe(browsersync.stream());
@@ -32,12 +32,12 @@ gulp.task('sass', () => {
         .pipe(browsersync.stream());
 });
 
-gulp.task('images', [], () => {
+gulp.task('images', () => {
     gulp.src(paths.images)
         .pipe(gulp.dest(paths.dest + 'img'));
 });
 
-gulp.task('js', [], () => {
+gulp.task('js', () => {
     gulp.src(paths.js)
         .pipe(gulp.dest(paths.dest))
         .pipe(browsersync.stream());
@@ -51,11 +51,9 @@ gulp.task('browser-sync', () => {
     });
 });
 
-
-
 gulp.task('watch', () => {
     gulp.watch(paths.js, ['js']);
-    gulp.watch(paths.scss, ['scss']);
+    gulp.watch(paths.scss, ['sass']);
     gulp.watch(paths.images, ['images']);
     gulp.watch(paths.html, ['html']);
 });
