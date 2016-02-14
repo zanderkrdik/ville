@@ -1,7 +1,7 @@
 var
     gulp = require('gulp'),
     clean = require('./clean.js'),
-    glbs = require('./filestructure.json');
+    glbs = require('../config.json').dir;
 // //var sprite = require('gulp-sprite-generator');
 
 
