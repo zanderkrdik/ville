@@ -18,7 +18,7 @@ var paths = {
 
 gulp.task('clean', () =>
     gulp
-        .src(paths.dest, { read: false }) // much faster 
+        .src(paths.dest, { read: false }) 
         .pipe(rimraf())
     );
 
