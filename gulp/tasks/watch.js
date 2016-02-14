@@ -1,6 +1,6 @@
 var
     gulp = require('gulp'),
-    glbs = require('../config.json').dir;
+    glbs = require('../config.js').dir;
 
 
 gulp.task('watch', ['build'], () => {

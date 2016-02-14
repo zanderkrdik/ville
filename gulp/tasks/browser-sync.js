@@ -1,7 +1,7 @@
 var
     gulp = require('gulp'),
     browsersync = require('browser-sync'),
-    glbs = require('../config.json').dir;
+    glbs = require('../config.js').dir;
 
 
 gulp.task('browser-sync', ['build'], () => {

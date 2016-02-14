@@ -4,7 +4,7 @@
 var
     gulp = require('gulp'),
     rimraf = require('gulp-rimraf'),
-    glbs = require('../config.json').dir;
+    glbs = require('../config.js').dir;
 
 var Clean = function(path) {
     return gulp

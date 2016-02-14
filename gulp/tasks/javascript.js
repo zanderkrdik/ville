@@ -3,7 +3,7 @@ var
     browsersync = require('browser-sync').create(),
     flatten = require('gulp-flatten'),
     clean = require('./clean.js'),
-    glbs = require('../config.json').dir;
+    glbs = require('../config.js').dir;
 
 gulp.task('clean:js', () => clean(glbs.js.build));
 

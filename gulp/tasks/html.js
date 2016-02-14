@@ -2,7 +2,7 @@ var
     gulp = require('gulp'),
     browsersync = require("browser-sync").create(),
     clean = require('./clean.js'),
-    glbs = require('../config.json').dir;
+    glbs = require('../config.js').dir;
 
 // Special Case: Only HTML files are stored at the root.
 // Neccessitates string concat in path.
