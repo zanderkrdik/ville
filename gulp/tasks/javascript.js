@@ -7,7 +7,7 @@ var
 
 gulp.task('clean:js', () => clean(glbs.js.build));
 
-gulp.task('js', ['clean:js'], () =>
+gulp.task('js', ['clean:js', 'jshint'], () =>
     gulp
         .src(glbs.js.src)
         .pipe(flatten())
