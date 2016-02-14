@@ -1,0 +1,22 @@
+{
+    "root": {
+        "src": "src/",
+        "build": "build/"
+    },
+    "html": {
+        "src": "src/**/*.html",
+        "build": "build/"
+    },
+    "js": {
+        "src": "src/**/*.js",
+        "build": "build/js/"
+    },
+    "scss": {
+        "src": "src/scss/*.scss",
+        "build": "build/css/"
+    },
+    "images": {
+        "src": "src/img/*",
+        "build": "build/img/"
+    }
+}
