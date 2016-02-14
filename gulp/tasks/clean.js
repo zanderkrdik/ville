@@ -12,6 +12,7 @@ var Clean = function(path) {
         .pipe(rimraf())
 }
 
+// Hard Clean
 gulp.task('clean', () => Clean(glbs.root.build));
 
 module.exports = Clean;
