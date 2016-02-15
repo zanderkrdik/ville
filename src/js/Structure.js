@@ -9,7 +9,9 @@ class Structure {
     constructor() {
         console.log('Ran Structure()');
         this.view = Backbone.View.extend({
-            
+            initialize: function() {
+                console.log('Structure.view.init');
+            }
         });
     }
 };

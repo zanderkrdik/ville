@@ -11,6 +11,5 @@ gulp.task('clean:html', () => clean(glbs.html.build + '*.html'));
 gulp.task('html', ['clean:html'], function() {
     return gulp
         .src(glbs.html.src)
-        .pipe(gulp.dest(glbs.html.build))
-        .pipe(browsersync.stream());
+        .pipe(gulp.dest(glbs.html.build));
 });

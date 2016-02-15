@@ -3,7 +3,7 @@ var
     glbs = require('../config.js').dir;
 
 
-gulp.task('watch', ['build', "browser-sync"], () => {
+gulp.task('watch', ['build'], () => {
     gulp.watch(glbs.js.src, ['js']);
     gulp.watch(glbs.scss.src, ['sass']);
     gulp.watch(glbs.images.src, ['images']);
