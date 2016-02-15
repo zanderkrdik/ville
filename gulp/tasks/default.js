@@ -4,4 +4,4 @@ var gulp = require('gulp');
 //     gulp.start();
 // });
 
-gulp.task('default', ['build', 'browser-sync', 'watch']);
+gulp.task('default', ['build', 'watch', 'browser-sync']);

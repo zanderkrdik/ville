@@ -1,5 +1,9 @@
-module.exports = class Structure {
+'use strict';
+
+class Structure {
   constructor() {
-      console.log('Structure()');
+      console.log('Ran Structure()');
   }
 };
+
+module.exports = Structure;
