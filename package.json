@@ -11,6 +11,7 @@
   "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.11.1",
+    "browserify": "^13.0.0",
     "globby": "^4.0.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
@@ -25,6 +26,11 @@
     "jshint-stylish": "^2.1.0",
     "require-dir": "^0.3.0",
     "through2": "^2.0.1",
-    "vinyl-buffer": "^1.0.0"
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "backbone": "^1.2.3",
+    "jquery": "^2.2.0"
   }
 }

@@ -7,3 +7,5 @@ console.log('Ville Started');
 console.log(Structure);
 
 var struc = new Structure();
+
+console.log(struc);
