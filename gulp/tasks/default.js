@@ -1,7 +1,3 @@
-var gulp = require('gulp');
-
-// gulp.task('default', ['html', 'sass', 'js'], function() {
-//     gulp.start();
-// });
+const gulp = require('gulp');
 
 gulp.task('default', ['build', 'watch', 'browser-sync']);

@@ -1,4 +1,4 @@
-var
+const
     gulp = require('gulp'),
     browsersync = require("browser-sync").create(),
     clean = require('./clean.js'),
@@ -8,8 +8,8 @@ var
 // Neccessitates string concat in path.
 gulp.task('clean:html', () => clean(glbs.html.build + '*.html'));
 
-gulp.task('html', ['clean:html'], function() {
-    return gulp
+gulp.task('html', ['clean:html'], () =>
+    gulp
         .src(glbs.html.src)
-        .pipe(gulp.dest(glbs.html.build));
-});
+        .pipe(gulp.dest(glbs.html.build))
+    );

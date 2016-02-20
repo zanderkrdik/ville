@@ -26,7 +26,7 @@ module.exports = {
             src: src + "img/*",
             build: dest + "img/"
         }, 
-        gulp: "gulp/"
+        gulp: "gulp/**/*.js"
     },
     jshint: {
         esversion: 6,
@@ -36,4 +36,4 @@ module.exports = {
         curly: true, 
         eqeqeq: true
     }
-}
+};

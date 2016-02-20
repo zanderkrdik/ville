@@ -1,4 +1,4 @@
-var
+const
     gulp = require('gulp'),
     browsersync = require('browser-sync').create(),
     sass = require('gulp-sass'),
