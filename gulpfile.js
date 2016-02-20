@@ -11,16 +11,16 @@
   https://github.com/vigetlabs/gulp-starter/
 */
 
-var 
-requireDir = require('require-dir'), 
-gulp = require('gulp');
+var
+    requireDir = require('require-dir'),
+    gulp = require('gulp');
 
 // Specify the init task, just to make life easier for subsequent tasks
-gulp.task('init', [], function() {
+gulp.task('init', [], function () {
     console.log('Default init (NOOP)');
 });
 
 // Require all tasks in gulp/tasks, including subfolders    
 
-            requireDir('./gulp/tasks', { recurse: true });
+requireDir('./gulp/tasks', { recurse: true });
 
