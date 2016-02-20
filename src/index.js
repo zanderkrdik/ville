@@ -5,6 +5,12 @@
 
 
 var Structure = require('./js/Structure.js');
+var House = require('./js/House.js');
+var Forest = require('./js/Forest.js');
+var Controls = require('./js/Controls.js');
+
+var FOV = require('./js/FieldOfView.js');
+
 
 console.log('Ville Started');
 
@@ -12,8 +18,13 @@ console.log('Ville Started');
 
 //Structure.initialize();
 
-
+new FOV();
+new House();
+new Forest();
+// throws a warning
 new Structure();
+
+new Controls('controls');
 
 
 //console.log(struc);

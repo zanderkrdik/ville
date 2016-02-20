@@ -20,8 +20,13 @@ const View = Backbone.View.extend({
         let $attachEl =
             'undefined' !== typeof this.$parentEl ?
             this.$parentEl : this.$defaultEl;
-        $attachEl.html(this.$el);
-    }
+        $attachEl.append(this.$el);
+    },
+    events: {
+        'click': 'clicktest'
+    }, 
+    clicktest: () => console.log('ping')
+    
 });
 
 const Model = Backbone.Model.extend({
@@ -35,18 +40,15 @@ class Structure {
     constructor() {
         this.model = new Model();
         this.view = new View({ $el: $('#field'), model: this.model });
+        this.init();
     }
 
     static initialize($controls) {
         console.log('Structure.initialize(' + $controls + ')');
     }
+    
+    init() { console.warn('Structure.init not overridden')}
 
 }
 
 module.exports = Structure;
-// module.exports = function () {
-//     'use strict';
-//     var
-//         model = new Model();
-//         new View({ $el: $('#field'), model: model });
-// };
