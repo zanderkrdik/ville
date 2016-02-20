@@ -5,6 +5,7 @@
     position: relative;
     float: left;
     margin: 10px;
+        background-image: url('../img/house.png');
 }
     .house {
         background-image: url('../img/house.png');
@@ -14,7 +15,12 @@
     }
 
 
-
 .forest {
     background-image: url('../img/forest.png');
+}
+
+
+#field {
+width: 500px;
+height: 500px;    
 }
