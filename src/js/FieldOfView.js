@@ -12,22 +12,10 @@ const View = Backbone.View.extend({
     $canvas: $('<canvas style="position:absolute;" id="drawingspace" width=1000 height=1000></canvas>'),
     initialize: function () {
         console.log('FOV.view.init');
-        console.log(this.$el.width());
-        console.log(this.$el.height());
+
         //this._creategrid();
-        
-        
-        this.grid = {
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        
+
+
         this.render();
     },
 
