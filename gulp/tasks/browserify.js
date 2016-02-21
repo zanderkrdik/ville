@@ -13,6 +13,8 @@ const
     glbs = require('../config.js').dir,
     pkg = require('../../package.json');
     
+    //TODO: Make sure that the app packages all resolve to the same names in the bundle
+    
 
 const VENDORBUILDFILENAME = 'vendor.js';
 const BUILDFILENAME = 'index.js';
@@ -55,16 +57,10 @@ gulp.task('browserify:app', ['clean:browserify:app'], function () {
         debug: true
     });
 
-    // (globby.sync(['src/index.js']) || []).forEach(function (id) {
-    //     var nid = path.resolve(id);
-    //     gutil.log('browserify:app adding: ' + id);
-    //     browse.require(nid, { expose: id });
-    // });
-
     (_.keys(pkg.dependencies) || []).forEach( (id) => {
         let nid = nodeResolve.sync(id);
         gutil.log('browserify:app removing: ' + (nid.indexOf('/') > -1 ? nid.substr(nid.lastIndexOf('/') + 1) : nid));
-        browse.external(id, { expose: id });
+        browse.external(id, { expose: nid });
     });
 
 

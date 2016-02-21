@@ -43,7 +43,6 @@ const Model = Backbone.Model.extend({
 class Structure {
 
     constructor(opts) {
-        console.log(opts);
         // TODO: Breaks if we don't have SOMETHIGN specified
         // TODO: Change xy to rc in opts. 
 
@@ -68,22 +67,12 @@ class Structure {
             }
         }
         
-        console.log(a);
-        
         this.model = new Model(a);
         this.view = new View({ $el: $('#field'), model: this.model });
         this.init();
     }
-
-    static initialize($controls) {
-        console.log('Structure.initialize(' + $controls + ')');
-    }
     
     init() { console.warn('Structure.init not overridden')}
-    
-    render() {
-        this.view.render();
-    }
 
 }
 

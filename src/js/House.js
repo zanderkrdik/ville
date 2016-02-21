@@ -5,7 +5,7 @@ const Structure = require('./Structure.js');
 class House extends Structure {
     init() {
         this.view.$el.addClass('house');
-        console.log(this);
+        //console.log(this);
     }
     
     describe() {
