@@ -2,15 +2,15 @@
 
 const Structure = require('./Structure.js');
 
-class House extends Structure {
+class Barn extends Structure {
     init() {
         this.view.$el.addClass('barn');
         console.log(this);
     }
     
     describe() {
-        console.log(this);
+        console.log(typeof this);
     }
 }
 
-module.exports = House;
+module.exports = Barn;

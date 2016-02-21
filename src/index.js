@@ -26,7 +26,7 @@ var barn2 = new Barn({pos: [1,10]});
 var barn3 = new Barn({pos: [10,10]});
 var barn4 = new Barn({pos: [10,1]});
 
-house.describe();
+//house.describe();
 new Forest({x: 2, y: 3});
 
 

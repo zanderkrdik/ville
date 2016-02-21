@@ -12,10 +12,12 @@ const View = Backbone.View.extend({
     className: 'structure',
     initialize: function () {
         console.log('Structure.view.init');
+        this.class = this.model.get('class');
         this.render();
+        
     },
     render: function () {
-        console.log('Structure.view.render');
+        console.log(this.class + '.view.render');
         let $attachEl =
             'undefined' !== typeof this.$parentEl ?
             this.$parentEl : this.$defaultEl;
@@ -30,13 +32,15 @@ const View = Backbone.View.extend({
     events: {
         'click': 'clicktest'
     }, 
-    clicktest: () => console.log('ping')
+    clicktest: function() {
+        console.log(this.class + ': Click');
+    }
     
 });
 
 const Model = Backbone.Model.extend({
     initialize: function () {
-        console.log('Structure.model.init');
+        console.log(this.get('class') + '.model.init');
     }
 });
 
@@ -50,17 +54,20 @@ class Structure {
             console.log('broken');
             return;
         }
+        this.class = this.constructor.name;
         
         let a;
         
         if (opts.pos) {
             a = {
+                class: this.class,
                 pos: opts.pos,
                 x: opts.pos[0],
                 y: opts.pos[1]    
             }
         } else {
             a = {
+                class: this.class,
                 pos: [opts.x, opts.y],
                 x: opts.x,
                 y: opts.y    
