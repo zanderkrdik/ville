@@ -5,7 +5,8 @@ const Structure = require('./Structure.js');
 class Barn extends Structure {
     init() {
         this.view.$el.addClass('barn');
-        console.log(this);
+        //this.render();
+        //console.log(this);
     }
     
     describe() {

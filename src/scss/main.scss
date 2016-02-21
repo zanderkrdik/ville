@@ -22,4 +22,22 @@
     width: 500px;
     height: 500px;    
     position: relative;
+    float: left;
+}
+
+.Sandbox {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1000;
+}
+
+.data-dump {
+    display: block;
+    position: absolute;
+    top:0;
+    right: 0;
+    height: 100%;
+    width: 400px;
+    border-left: 1px solid black;
 }

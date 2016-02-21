@@ -11,10 +11,11 @@ const View = Backbone.View.extend({
     tagName: 'div',
     className: 'structure',
     initialize: function () {
-        console.log('Structure.view.init');
         this.class = this.model.get('class');
-        this.render();
-        
+        console.log(this.class + '.view.init');
+        this.on('render', function() {
+            console.log('rendering!');
+        })
     },
     render: function () {
         console.log(this.class + '.view.render');
@@ -41,6 +42,9 @@ const View = Backbone.View.extend({
 const Model = Backbone.Model.extend({
     initialize: function () {
         console.log(this.get('class') + '.model.init');
+        this.on('render', function() {
+            console.log('rendering!');
+        })
     }
 });
 
@@ -80,6 +84,10 @@ class Structure {
     }
     
     init() { console.warn('Structure.init not overridden')}
+    
+    render() {
+        this.view.render();
+    }
 
 }
 
