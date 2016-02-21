@@ -6,7 +6,6 @@ const
 
 Backbone.$ = $;
 
-
 const View = Backbone.View.extend({
     $defaultEl: $('#field'),
     tagName: 'div',
@@ -20,6 +19,12 @@ const View = Backbone.View.extend({
         let $attachEl =
             'undefined' !== typeof this.$parentEl ?
             this.$parentEl : this.$defaultEl;
+        let pos = this.model.get('pos');
+        
+        pos = [(pos[0] - 1) * 50, (pos[1] - 1) * 50];
+        this.$el.css('top', pos[0]);
+        this.$el.css('left', pos[1]);
+
         $attachEl.append(this.$el);
     },
     events: {
@@ -37,8 +42,35 @@ const Model = Backbone.Model.extend({
 
 class Structure {
 
-    constructor() {
-        this.model = new Model();
+    constructor(opts) {
+        console.log(opts);
+        // TODO: Breaks if we don't have SOMETHIGN specified
+        // TODO: Change xy to rc in opts. 
+
+        if (!opts || !(opts.pos || (opts.x && opts.y)) || (opts.pos && (opts.x || opts.y))) {
+            console.log('broken');
+            return;
+        }
+        
+        let a;
+        
+        if (opts.pos) {
+            a = {
+                pos: opts.pos,
+                x: opts.pos[0],
+                y: opts.pos[1]    
+            }
+        } else {
+            a = {
+                pos: [opts.x, opts.y],
+                x: opts.x,
+                y: opts.y    
+            }
+        }
+        
+        console.log(a);
+        
+        this.model = new Model(a);
         this.view = new View({ $el: $('#field'), model: this.model });
         this.init();
     }
@@ -48,6 +80,10 @@ class Structure {
     }
     
     init() { console.warn('Structure.init not overridden')}
+    
+    render() {
+        this.view.render();
+    }
 
 }
 
