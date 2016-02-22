@@ -7,14 +7,14 @@ const
 Backbone.$ = $;
 
 const View = Backbone.View.extend({
-    events: {
-        'click #time-control': 'startstop'
-    },
     initialize: (el) => {
         this.el = el;
-        //this.$el = $(this.el);
+        this.$el = $(this.el);
         console.log('Controls.view|initialize');
         console.log(this.$el);
+    },
+    events: {
+        'click #time-control': 'startstop'
     },
     startstop: (e) => {
         console.log(e);

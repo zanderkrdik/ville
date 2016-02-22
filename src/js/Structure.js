@@ -15,7 +15,7 @@ const View = Backbone.View.extend({
         console.log(this.class + '.view.init');
         this.on('render', function() {
             console.log('rendering!');
-        })
+        });
     },
     render: function () {
         console.log(this.class + '.view.render');
@@ -44,7 +44,7 @@ const Model = Backbone.Model.extend({
         console.log(this.get('class') + '.model.init');
         this.on('render', function() {
             console.log('rendering!');
-        })
+        });
     }
 });
 
@@ -68,14 +68,14 @@ class Structure {
                 pos: opts.pos,
                 x: opts.pos[0],
                 y: opts.pos[1]    
-            }
+            };
         } else {
             a = {
                 class: this.class,
                 pos: [opts.x, opts.y],
                 x: opts.x,
                 y: opts.y    
-            }
+            };
         }
         
         this.model = new Model(a);
@@ -83,7 +83,7 @@ class Structure {
         this.init();
     }
     
-    init() { console.warn('Structure.init not overridden')}
+    init() { console.warn('Structure.init not overridden'); }
     
     render() {
         this.view.render();

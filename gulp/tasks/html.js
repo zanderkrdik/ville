@@ -1,6 +1,5 @@
 const
     gulp = require('gulp'),
-    browsersync = require("browser-sync").create(),
     clean = require('./clean.js'),
     glbs = require('../config.js').dir;
 

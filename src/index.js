@@ -4,14 +4,12 @@
 
 const $ = require('jquery');
 
-var Structure = require('./js/Structure.js');
+//var Structure = require('./js/Structure.js');
 var House = require('./js/House.js');
 var Barn = require('./js/Barn.js');
-var Forest = require('./js/Forest.js');
+//var Forest = require('./js/Forest.js');
 var Controls = require('./js/Controls.js');
 
-
-var FOV = require('./js/FieldOfView.js');
 
 var Sandbox = require('./js/Sandbox.js');
 
@@ -19,7 +17,6 @@ console.log('Ville Started');
 
 var sandbox = new Sandbox($('#field'));
 
-//var fov = new FOV();
 var house = new House({pos: [1,2]});
 sandbox.add(house);
 

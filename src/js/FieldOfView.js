@@ -146,7 +146,7 @@ class FieldOfView {
         console.log('FOV.initialize(' + $controls + ')');
     }
 
-    init() { console.warn('FOV.init not overridden') }
+    init() { console.warn('FOV.init not overridden'); }
 
 
 
