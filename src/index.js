@@ -19,6 +19,10 @@ var sandbox = new Sandbox($('#field'));
 
 var house = new House({pos: [1,2]});
 sandbox.add(house);
+var barn = new Barn({pos: [1,1]});
+sandbox.add(barn);
+var barn2 = new Barn({pos: [1,10]});
+sandbox.add(barn2);
 
 var house1 = new House({pos: [4,2]});
 sandbox.add(house1);
@@ -26,19 +30,22 @@ sandbox.add(house1);
 var house2 = new House({pos: [5,7]});
 sandbox.add(house2);
 
-var barn = new Barn({pos: [1,1]});
-sandbox.add(barn);
-var barn2 = new Barn({pos: [1,10]});
-sandbox.add(barn2);
 var barn3 = new Barn({pos: [10,10]});
 sandbox.add(barn3);
 var barn4 = new Barn({pos: [10,1]});
 sandbox.add(barn4);
+sandbox.add(barn4);
+
+
 
 // //house.describe();
 // new Forest({x: 2, y: 3});
 sandbox.render();
 
-new Controls('controls');
+
+barn.model.set('pos',[2,2]);
+
+
+new Controls('#field-controls');
 
 //console.log(struc);

@@ -22,11 +22,6 @@ const View = Backbone.View.extend({
         let $attachEl =
             'undefined' !== typeof this.$parentEl ?
             this.$parentEl : this.$defaultEl;
-        let pos = this.model.get('pos');
-        
-        pos = [(pos[0] - 1) * 50, (pos[1] - 1) * 50];
-        this.$el.css('top', pos[0]);
-        this.$el.css('left', pos[1]);
 
         $attachEl.append(this.$el);
     },

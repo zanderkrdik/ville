@@ -54,6 +54,6 @@ function jshintCodeRem(skipcodes) {
 
   // returning the file stream
   return stream;
-};
+}
 
     

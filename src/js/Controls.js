@@ -7,25 +7,22 @@ const
 Backbone.$ = $;
 
 const View = Backbone.View.extend({
+    el: '#fieldcontrols',
     initialize: (el) => {
-        this.el = el;
-        this.$el = $(this.el);
         console.log('Controls.view|initialize');
-        console.log(this.$el);
     },
     events: {
-        'click #time-control': 'startstop'
+        'click #timecontrol': 'startstop'
     },
-    startstop: (e) => {
+    startstop: function(e) {
         console.log(e);
     }
 
 });
 
 class Controls {
-    constructor(el) {
-        this.el = el || 'Controls';
-        this.view = new View(this.el);
+    constructor() {
+        this.view = new View();
     }
 }
 

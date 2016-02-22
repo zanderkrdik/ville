@@ -62,7 +62,7 @@ gulp.task('browserify:vendor', ['clean:browserify:vendor'],  () => {
 
 gulp.task('clean:browserify:app', () => clean(glbs.js.build + BUILDFILENAME));
 
-gulp.task('browserify:app', ['clean:browserify:app', 'jshint'], function () {
+gulp.task('browserify:app', ['jshint'], function () {
     if (vendorkeys === []) {
         GenVendorKeys();        
     }

@@ -4,10 +4,25 @@
  * The Sandbox
  * Provides placement and distance information to the players. 
  * 
+ * Methods:
+ * 
+ * Add(Structure)
+ * - validates the position is available
+ * - adds the structure to the internal map
+ * - records the structure's position on the map
+ * - gives the structure an $el to build upon
+ * - adds any lsiteners required to the structure
+ * 
+ * Remove(Structure) || Remove(Pos)
+ * - remove from internal map
+ * - remove position from map
+ * - remove listeners
+ * - delete the $el
+ * 
+ * ShortestPath(Structure, Structure) || ShortestPath(Pos,Pos)
+ * - returns an array of Pos values dictating the shortest path.
+ * - accounts for other structures.
  */
-
-
-
 
 const
     $ = require('jquery'),
@@ -15,15 +30,19 @@ const
 
 Backbone.$ = $;
 
-const SCALE = 1000;
 
 const Model = Backbone.Model.extend({
     defaults: {
+        $elBound: null, // the jquery node representing the drawing area.
         $realElement: null,
-        scale: SCALE,
+        scale: 1000, // the arbitrary internal scale of the drawing area
+        unit_x: 100, // the x side length of a single cell, in terms of `scale`
+        unit_y: 100, // the y side length of a single cell, in terms of `scale`
         width: null,
             // keep it square for now
-        height: null,        
+        height: null,
+        children: [],
+        childrenPos: []       
     },
     initialize: function() {
         console.log('Sandbox.model.initialize');
@@ -43,86 +62,55 @@ const View = Backbone.View.extend({
     className: 'Sandbox',
     initialize: function() {
         console.log('Sandbox.view.initialize');
-        this.canvas = this.$el.get(0);
-        this.canvas.width = this.model.get('width');
-        this.canvas.height = this.model.get('height');
-        this.$parentEl = this.model.get('$realElement');
-        this.cell = {
-            width: 100,
-            height: 100
-        };
+
+        // <IMPORTANT> These defs are required.
+        // The underlying canvas needs to know its arbitrary scale
+        this.$el.get(0).width = this.model.get('width');
+        this.$el.get(0).height = this.model.get('height');
+        // </IMPORTANT>
+
+        this.listenTo(this.model,'change', function() {
+            console.log('model change');
+        });
+
         this.render();
     }, 
     render: function() {
         console.log('Sandbox.view.render');
         this._drawgrid();
-
-        this.$parentEl.append(this.$el);
+        this.model.get('$realElement').append(this.$el);
     },
         // A test function to allow us to see the grid
     _drawgrid: function () {
-        let ctx = this.canvas.getContext('2d');
-
-        if (!ctx) {
-            // TODO: Throw error
-            console.warn('no canvas');
-            return;
-        }
-
-        // TODO: [1] REfector these two axis instruction sets into something nice.
+        let ctx = this.$el.get(0).getContext('2d');
+        let uX = this.model.get('unit_x');
+        let uW = this.model.get('width');
+        let uY = this.model.get('unit_y');
+        let uH = this.model.get('height');
         
-        let i = 0;
-        let maxi = this.canvas.width - this.cell.width;
-
-        while (i < maxi) {
-            i = i + this.cell.width;
+        if (!ctx) {
+            throw new Error('Sandbox: No canvas context found. Init error?');
+        }
+        
+        // Columns
+        for (let i = uX; i < uW; i = i + uX) {
             ctx.beginPath();
             ctx.moveTo(i, 0);
-            ctx.lineTo(i, this.canvas.height);
+            ctx.lineTo(i, uH);
             ctx.stroke();
         }
 
-        i = 0;
-        maxi = this.canvas.height - this.cell.height;
-
-        while (i < maxi) {
-            i = i + this.cell.height;
+        // Rows
+        for (let i = uY; i < uH; i = i + uY) {
             ctx.beginPath();
             ctx.moveTo(0, i);
-            ctx.lineTo(this.canvas.width, i);
+            ctx.lineTo(uW, i);
             ctx.stroke();
         }
-        
-        // /TODO:[1]
     }
 
 });
 
-        const sColl = Backbone.Collection.extend({
-            model: Model,
-            locations: [],
-            initialize: function() {
-                console.log('Sandbox.constructor.structureCollection.initialize');
-            },
-            add: function(item) {
-                if (!item || !item.attributes) {
-                    return;
-                }
-                //item.view.render()
-                console.log(item.attributes);
-                let pos = item.attributes.pos;
-                if (!pos) {
-                    return;
-                }
-                if (this.locations.indexOf(pos) === -1) {
-                    this.locations.push(pos);
-                    console.log(this.locations);
-                } else {
-                    console.log('dupe!');
-                }
-                return item;
-            }
-        });
 
 // Creates a model of the local world
 // handles the addition and subtraction of elements
@@ -132,19 +120,37 @@ class Sandbox {
         this.model = new Model();//{$realElement: $el});
         this.model.set('$realElement', $el);
         this.view = new View({model: this.model});
-        this.structureCollection = new sColl({model: this.model});
     }
     add(element) {
         if (!element) {
             return;
         }
-        //TODO: make sure it is an instance of a structure
-        console.log(element);
-        element.render();
+        
+        let requestedPos = element.model.get('pos');
+        let children = this.model.get('children');
+        let childrenPos = this.model.get('childrenPos');
+
+        if (childrenPos.indexOf(requestedPos) !== -1) {
+            console.log('Sandbox: Something already in that position');
+            // TODO: Throw error
+            return;
+        }
+        
+        children.push(element);
+        childrenPos.push(requestedPos);
+        
+        // Tell the shildren what to listen to
+        element.model.listenTo(this.model,'Sandbox:render', () => {
+            requestedPos = [(requestedPos[0] - 1) * this.model.get('unit_x')/2, (requestedPos[1] - 1) *  this.model.get('unit_y')/2];
+            element.view.$el.css('top', requestedPos[0]);
+            element.view.$el.css('left', requestedPos[1]);
+            element.render();
+        });
+        
     }
     render() {
-        console.log('render');
-        //this.structureCollection.trigger('render');
+        console.log('Sandbox.render');
+        this.model.trigger('Sandbox:render');
     }
 }
 
