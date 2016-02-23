@@ -15,7 +15,8 @@ const View = Backbone.View.extend({
         'click #timecontrol': 'startstop'
     },
     startstop: function(e) {
-        console.log(e);
+        console.log('click');
+       // console.log(e);
     }
 
 });

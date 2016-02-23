@@ -12,7 +12,7 @@ gulp.task('browser-sync', ['build', 'watch'], () => {
         }
     });
     
-    browsersync.watch(glbs.root.build + "**/*.{html,js,css}").on('change', function(evt) {
+    gulp.watch(glbs.root.build + "**/*.{html,js,css}").on('change', function(evt) {
         gutil.log('Reloading: ' + evt);
         browsersync.reload();
     });

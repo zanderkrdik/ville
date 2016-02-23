@@ -16,6 +16,12 @@ const View = Backbone.View.extend({
         this.on('render', function() {
             console.log('rendering!');
         });
+        
+        this.listenTo(this.model,'change:pos', function(i) {
+            this.render();
+        })
+
+
     },
     render: function () {
         console.log(this.class + '.view.render');
@@ -37,9 +43,6 @@ const View = Backbone.View.extend({
 const Model = Backbone.Model.extend({
     initialize: function () {
         console.log(this.get('class') + '.model.init');
-        this.on('render', function() {
-            console.log('rendering!');
-        });
     }
 });
 

@@ -37,7 +37,7 @@ const Model = Backbone.Model.extend({
         $realElement: null,
         scale: 1000, // the arbitrary internal scale of the drawing area
         unit_x: 100, // the x side length of a single cell, in terms of `scale`
-        unit_y: 100, // the y side length of a single cell, in terms of `scale`
+        unit_y: 200, // the y side length of a single cell, in terms of `scale`
         width: null,
             // keep it square for now
         height: null,
@@ -82,6 +82,7 @@ const View = Backbone.View.extend({
     },
         // A test function to allow us to see the grid
     _drawgrid: function () {
+        
         let ctx = this.$el.get(0).getContext('2d');
         let uX = this.model.get('unit_x');
         let uW = this.model.get('width');
@@ -141,12 +142,18 @@ class Sandbox {
         
         // Tell the shildren what to listen to
         element.model.listenTo(this.model,'Sandbox:render', () => {
-            requestedPos = [(requestedPos[0] - 1) * this.model.get('unit_x')/2, (requestedPos[1] - 1) *  this.model.get('unit_y')/2];
+            requestedPos = [(requestedPos[0] - 1) * this.model.get('unit_y')/2, (requestedPos[1] - 1) *  this.model.get('unit_x')/2];
             element.view.$el.css('top', requestedPos[0]);
             element.view.$el.css('left', requestedPos[1]);
             element.render();
         });
         
+        this.model.listenTo(element.view,'render', (view) => {
+            console.log('reredner');
+            requestedPos = [(requestedPos[0] - 1) * this.model.get('unit_y')/2, (requestedPos[1] - 1) *  this.model.get('unit_x')/2];
+            view.$el.css('top', requestedPos[0]);
+            view.$el.css('left', requestedPos[1]);
+        });        
     }
     render() {
         console.log('Sandbox.render');

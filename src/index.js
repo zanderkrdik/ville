@@ -43,7 +43,7 @@ sandbox.add(barn4);
 sandbox.render();
 
 
-barn.model.set('pos',[2,2]);
+//barn.model.set('pos',[2,2]);
 
 
 new Controls('#field-controls');
