@@ -8,7 +8,7 @@ Backbone.$ = $;
 
 const View = Backbone.View.extend({
     el: '#fieldcontrols',
-    initialize: (el) => {
+    initialize: () => {
         console.log('Controls.view|initialize');
     },
     events: {
@@ -16,7 +16,7 @@ const View = Backbone.View.extend({
     },
     startstop: function(e) {
         console.log('click');
-       // console.log(e);
+        console.log(e);
     }
 
 });

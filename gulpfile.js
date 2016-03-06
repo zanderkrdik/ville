@@ -8,19 +8,34 @@
   To add a new task, simply add a new task file that directory.
   gulp/tasks/default.js specifies the default set of tasks to run
   when you run `gulp`.
+
+  Adapted from:
   https://github.com/vigetlabs/gulp-starter/
 */
 
 var
     requireDir = require('require-dir'),
-    gulp = require('gulp');
+    gulp = require('gulp'),
+    gutil = require('gulp-util'),
+    pkg = require('./package.json');
+
+
+var log = function(mthd, msg) {
+    gutil.log('[' + gutil.colors.cyan(mthd) + '] ' + msg);
+}
+
 
 // Specify the init task, just to make life easier for subsequent tasks
 gulp.task('init', [], function () {
-    console.log('Default init (NOOP)');
+    log('init', 'Default init (NOOP)');
 });
 
-// Require all tasks in gulp/tasks, including subfolders    
+gulp.task('establish', ['init'], function (e) {
+    log('establish', 'Default init (NOOP)');
+    return this;
+});
 
-requireDir('./gulp/tasks', { recurse: true });
+
+// Require all tasks in gulp/tasks, including subfolders    
+requireDir(pkg.gulp.taskDir, { recurse: true });
 

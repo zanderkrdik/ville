@@ -4,6 +4,35 @@
 
 const $ = require('jquery');
 
+// let's define what we want to do
+// simulate the interaction of multiple producers and consumers
+// producer structures create elements
+// consumer structures use elements
+// // some structures can be producers and consumers
+
+// checkpoints
+//  - app displays a consumer and a producer
+//      -- create a sandbox to place the structures in
+//      -- place structures
+//  - app shows link between consumer and producer
+//  - app shows transport between consumer and producer
+//  - consumer and producer update states accordingly. 
+
+/*
+const Structure = require();
+
+let mill = new Structure({
+    type: Consumer,
+    genre: 'Barn'
+});
+
+let forest = new Structure({
+    type: Producer,
+    genre: 'Forest'
+});
+*/
+
+
 //var Structure = require('./js/Structure.js');
 var House = require('./js/House.js');
 var Barn = require('./js/Barn.js');
