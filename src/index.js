@@ -9,15 +9,6 @@ var
     PlayingField = require('./js/PlayingField');
 
 
-
-// Create our Application
-var App = Marionette.Application.extend({
-    initialize: function (options) {
-        this.view = new AppView({ el: 'body' });
-        console.log('My container:', options.container);
-    }
-});
-
 // A global view containing all our page elements.
 var AppView = Marionette.LayoutView.extend({
     el: null, //let controller define this
@@ -35,23 +26,21 @@ var AppView = Marionette.LayoutView.extend({
     }
 });
 
-
-
+// Create our Application
+var App = Marionette.Application.extend({
+    initialize: function (options) {
+        this.view = new AppView({ el: 'body' });
+        //console.log('My container:', options.container);
+    }
+});
 
 
 var app = new App({ container: '#app' });
-
 app.playingfield = new PlayingField();
-
-app.on("before:start", function (options) {
-    options.moreData = "Yo dawg, I heard you like options so I put some options in your options!";
-});
 
 // Start history when our application is ready
 app.on('start', function (options) {
     Backbone.history.start()
-    console.log('start');
-    console.log('My container:', options.moreData);
 });
 
 // Load some initial data, and then start our application
