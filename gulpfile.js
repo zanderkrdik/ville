@@ -32,7 +32,6 @@ gulp.task('init', [], function () {
 
 gulp.task('establish', ['init'], function (e) {
     log('establish', 'Default init (NOOP)');
-    return this;
 });
 
 
