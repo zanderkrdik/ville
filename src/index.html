@@ -9,7 +9,7 @@
     <menu>
 
         <div id="fieldcontrols">
-                <input type="button" value="Start" id="timecontrol" name="timecontrol"></input>
+            <input type="button" value="Start" id="timecontrol" name="timecontrol"></input>
         </div>
 
 
@@ -28,7 +28,16 @@
 
 
 </body>
-    <script src="js/vendor.js"></script>
-    <script src="js/index.js"></script>
+<!-- Load the Vendor Scripts -->
+<script src="js/vendor.js"></script>
 
+<!-- Define the HTML Templates -->
+<script id="PlayingFieldView" type="text/html">
+    <canvas class="Sandbox">
+
+    </canvas>
+</script>
+
+<!-- Load the Bootstrap Script (should be the last call in HTML) -->
+<script src="js/index.js"></script>
 </html>
