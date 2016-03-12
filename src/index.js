@@ -7,6 +7,7 @@ var
 
 var
     //Structure = require('./js/Structure.js'),
+    Controls = require('./js/Controls.js'),
     House = require('./js/House.js'),
     Forest = require('./js/Forest.js'),
     Barn = require('./js/Barn.js'),
@@ -17,7 +18,8 @@ var
 var AppView = Marionette.LayoutView.extend({
     el: null, //let controller define this
     regions: {
-        playingfield: '#field'
+        playingfield: '#field',
+        playingfieldcontrols: '#fieldcontrols'
     },
     initialize: function () {
     },
@@ -39,16 +41,23 @@ var App = Marionette.Application.extend({
 
 
 var app = new App({ container: '#app' });
+app.controls = new Controls();
 app.playingfield = new PlayingField();
-app.playingfield.add(new House({pos: [1,2]}));
-app.playingfield.add(new Forest({pos: [3,3]}));
-app.playingfield.add(new Barn({pos: [2,1]}));
+app.playingfield.listenTo(app.controls, 'zoomin', function() {
+    this.zoomin();
+});
+app.playingfield.listenTo(app.controls, 'zoomout', function() {
+    this.zoomout();
+});
+app.playingfield.add(new House({ pos: [1, 2] }));
+app.playingfield.add(new Forest({ pos: [3, 3] }));
+app.playingfield.add(new Barn({ pos: [2, 1] }));
 
 
 // Start history when our application is ready
 app.on('start', function (options) {
     Backbone.history.start();
-    app.playingfield.render();    
+    app.playingfield.render();
 });
 
 // Load some initial data, and then start our application

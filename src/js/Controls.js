@@ -2,31 +2,34 @@
 
 const
     $ = require('jquery'),
-    Backbone = require('backbone');
+    Backbone = require('backbone'),
+    Marionette = require('backbone.marionette');
 
-Backbone.$ = $;
-
-const View = Backbone.View.extend({
+const MView = Marionette.ItemView.extend({
     el: '#fieldcontrols',
-    initialize: () => {
+    template: '#PlayingFieldControlsView',
+    initialize: function() {
         console.log('Controls.view|initialize');
+        this.render();
     },
     events: {
-        'click #timecontrol': 'startstop'
+        'click #timecontrol': 'startstop',
+        'click #zoomin': 'zoomin',
+        'click #zoomout': 'zoomout'
     },
     startstop: function(e) {
         console.log('click');
-        console.log(e);
+    },
+    zoomin: function(e) {
+        console.log('click');
+        this.trigger('zoomin');
+    },
+    zoomout: function(e) {
+        console.log('click');
+        this.trigger('zoomout');
     }
 
 });
 
-class Controls {
-    constructor() {
-        this.view = new View();
-    }
-}
-
-
-module.exports = Controls;
+module.exports = MView;
     

@@ -7,37 +7,30 @@
 
 <body>
     <menu>
-
-        <div id="fieldcontrols">
-            <input type="button" value="Start" id="timecontrol" name="timecontrol"></input>
-        </div>
-
-
-
-
+        <div id="fieldcontrols"></div>
     </menu>
 
-    <div id="field">
-    </div>
+    <div id="field"></div>
 
-    <div class="data-dump">
-
-    </div>
-
-
-
+    <div class="data-dump"></div>
 
 </body>
+
 <!-- Load the Vendor Scripts -->
 <script src="js/vendor.js"></script>
 
 <!-- Define the HTML Templates -->
 <script id="PlayingFieldView" type="text/html">
-    <canvas class="Sandbox">
+    <canvas></canvas>
+</script>
 
-    </canvas>
+<script id="PlayingFieldControlsView" type="text/html">
+    <input type="button" value="Start" id="timecontrol" name="timecontrol"></input>
+    <input type="button" value="+Zoom" id="zoomin" name="zoomin"></input>
+    <input type="button" value="-Zoom" id="zoomout" name="zoomout"></input>
 </script>
 
 <!-- Load the Bootstrap Script (should be the last call in HTML) -->
 <script src="js/index.js"></script>
+
 </html>

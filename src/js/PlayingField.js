@@ -15,9 +15,9 @@ const Model = Backbone.Model.extend({
         // the arbitrary internal scale of the drawing area
         scale: 1000, 
         // the x side length of a single cell, in terms of `scale`
-        unit_x: 100, 
+        unit_x: 50, 
         // the y side length of a single cell, in terms of `scale`
-        unit_y: 100,
+        unit_y: 50,
         width: null,
         // keep it square for now
         height: null,
@@ -26,6 +26,7 @@ const Model = Backbone.Model.extend({
         this.on('change', this._recalc);
     },
     _recalc: function () {
+        console.log('PlayingField.model._recalc');
         let $rel = this.attributes.$realElement;
         this.attributes.width = this.attributes.scale;
         this.attributes.height = this.attributes.scale * ($rel.height() / $rel.width());
@@ -63,6 +64,20 @@ const MView = Marionette.LayoutView.extend({
             element.render();
         });
 
+    },
+    zoomin: function() {
+        console.log('PlayingField.zoomin');
+        let scale = this.model.get('scale');
+        console.log(scale);
+        this.model.set('scale',scale * 2);
+        this.render();
+    },
+    zoomout: function() {
+        console.log('PlayingField.zoomout');
+        let scale = this.model.get('scale');
+        console.log(scale);
+        this.model.set('scale',scale / 2);
+        this.render();
     },
     events: {
         'click': 'testClick',
