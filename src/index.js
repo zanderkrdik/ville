@@ -7,7 +7,8 @@ var
 
 var
     PlayingField = require('./js/PlayingField'),
-    House = require('./js/House.js');
+    House = require('./js/House.js'),
+    Structure = require('./js/Structure.js');
 
 
 // A global view containing all our page elements.
@@ -40,7 +41,7 @@ var Res = Backbone.Collection.extend({
 
 var app = new App({ container: '#app' });
 app.playingfield = new PlayingField();
-app.playingfield.house = new House({pos: [1,2]});
+app.playingfield.house = new Structure({pos: [1,2]});
 
 // app.playingfield.residence = new Res({});
 // app.playingfield.residence.add(new House({pos: [3,3]}));
