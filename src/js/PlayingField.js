@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * PlayingField
+ * Controls the positioning of elements on the visual playing field.
+ */
+
 const
     Backbone = require('backbone'),
     Marionette = require('backbone.marionette');

@@ -71,6 +71,7 @@ const MView = Marionette.ItemView.extend({
     },
     clicktest: function (e) {
         e.stopPropagation();
+        $(e.currentTarget).css('background-color','green');
         console.log(this.jsclass + ':clicktest');
     }
 
