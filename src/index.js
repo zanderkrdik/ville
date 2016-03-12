@@ -6,9 +6,10 @@ var
     Marionette = require('backbone.marionette');
 
 var
-    PlayingField = require('./js/PlayingField'),
+    //Structure = require('./js/Structure.js'),
     House = require('./js/House.js'),
-    Structure = require('./js/Structure.js');
+    Forest = require('./js/Forest.js'),
+    PlayingField = require('./js/PlayingField');
 
 
 // A global view containing all our page elements.
@@ -38,14 +39,14 @@ var App = Marionette.Application.extend({
 
 var app = new App({ container: '#app' });
 app.playingfield = new PlayingField();
-app.playingfield.house = new House({pos: [1,2]});
+app.playingfield.add(new House({pos: [1,2]}));
+app.playingfield.add(new Forest({pos: [3,3]}));
 
 
 // Start history when our application is ready
 app.on('start', function (options) {
     Backbone.history.start();
-    app.playingfield.house.render();
-    
+    app.playingfield.render();    
 });
 
 // Load some initial data, and then start our application

@@ -3,7 +3,7 @@
 const
     $ = require('jquery'),
     Backbone = require('backbone'),
-   Marionette = require('backbone.marionette');
+    Marionette = require('backbone.marionette');
 
 
 const Model = Backbone.Model.extend({
@@ -11,7 +11,7 @@ const Model = Backbone.Model.extend({
         jsclass: 'Structure'
     },
     initialize: function () {
-       console.log(this.get('jsclass') + '.model.init');
+        console.log(this.get('jsclass') + '.model.init');
     }
 });
 
@@ -19,7 +19,7 @@ const MView = Marionette.ItemView.extend({
     jsclass: 'Structure',
     Model: Model,
     $defaultEl: $('#field'),
-    tagName: 'div',
+    template: '<div></div>',
     className: 'structure house',
     initialize: function (opts) {
         console.log(this.jsclass + ".initialize");
@@ -31,50 +31,49 @@ const MView = Marionette.ItemView.extend({
             console.log('broken');
             return;
         }
-        
+
         let a;
- 
+
         if (opts.pos) {
             a = {
                 pos: opts.pos,
                 x: opts.pos[0],
-                y: opts.pos[1]    
+                y: opts.pos[1]
             };
         } else {
             a = {
                 pos: [opts.x, opts.y],
                 x: opts.x,
-                y: opts.y    
+                y: opts.y
             };
         }
-        
-        a.jsclass = this.jsclass;
-        
-        this.model = new Model(a);
-        this.listenTo(this.model,'change:pos', function(i) {
-            this.render();
-        });
 
-        this.on('render', function() {
+        a.jsclass = this.jsclass;
+
+        this.model = new Model(a);
+        this.listenTo(this.model, 'change:pos', function (i) {
             this.render();
         });
 
     },
-    render: function () {
-        console.log(this.jsclass + '.render');
+    onBeforeRender: function () {
+        console.log(this.jsclass + ':onBeforeRender');
+    },
+    onRender: function () {
+        console.log(this.jsclass + ':onRender');
         let $attachEl =
             'undefined' !== typeof this.$parentEl ?
-            this.$parentEl : this.$defaultEl;
+                this.$parentEl : this.$defaultEl;
         $attachEl.append(this.$el);
     },
     events: {
         'click': 'clicktest'
-    }, 
-    clicktest: function(e) {
+    },
+    clicktest: function (e) {
         e.stopPropagation();
-        console.log(this.class + ': Click');
+        console.log(this.jsclass + ':clicktest');
     }
-    
+
 });
 
 

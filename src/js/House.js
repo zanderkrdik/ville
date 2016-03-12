@@ -3,14 +3,8 @@
 const Structure = require('./Structure.js');
 
 const MView = Structure.extend({
-    jsclass: 'House'
+    jsclass: 'Structure|House',
+    className: 'structure house',
 });
-
-// MView.Model.extend({
-//    initialize: function() {
-//        console.log('init');
-//    } 
-// });
-
 
 module.exports = MView;

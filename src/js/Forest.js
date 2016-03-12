@@ -2,11 +2,9 @@
 
 const Structure = require('./Structure.js');
 
-class Forest extends Structure {
-    init() {
-        this.view.$el.addClass('forest');
-        //this.render();
-    }
-}
+const MView = Structure.extend({
+    jsclass: 'Structure|Forest',
+    className: 'structure forest',
+});
 
-module.exports = Forest;
+module.exports = MView;
