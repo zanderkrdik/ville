@@ -9,6 +9,7 @@ var
     //Structure = require('./js/Structure.js'),
     House = require('./js/House.js'),
     Forest = require('./js/Forest.js'),
+    Barn = require('./js/Barn.js'),
     PlayingField = require('./js/PlayingField');
 
 
@@ -41,6 +42,7 @@ var app = new App({ container: '#app' });
 app.playingfield = new PlayingField();
 app.playingfield.add(new House({pos: [1,2]}));
 app.playingfield.add(new Forest({pos: [3,3]}));
+app.playingfield.add(new Barn({pos: [2,1]}));
 
 
 // Start history when our application is ready
