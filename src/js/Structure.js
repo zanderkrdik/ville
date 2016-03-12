@@ -67,12 +67,22 @@ const MView = Marionette.ItemView.extend({
         $attachEl.append(this.$el);
     },
     events: {
+        'dblclick': 'preventPropagation',
         'click': 'clicktest'
     },
-    clicktest: function (e) {
+    preventPropagation: function(e) {
         e.stopPropagation();
-        $(e.currentTarget).css('background-color','green');
+    },
+    clicktest: function (e) {
         console.log(this.jsclass + ':clicktest');
+        this.preventPropagation(e);
+        if (!this.model.get('selected')) { 
+            $(e.currentTarget).css('background-color','green');
+            this.model.set('selected',true);
+        } else {
+            $(e.currentTarget).css('background-color','');
+            this.model.set('selected',false);
+        }
     }
 
 });

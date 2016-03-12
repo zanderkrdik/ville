@@ -48,16 +48,17 @@ const MView = Marionette.LayoutView.extend({
         }
 
         let requestedPos = element.model.get('pos');
-        let scalingFactor = this.model.get('$realElement').css('width') / this.model.get('$realElement').get(0).width;
+        let wScalingFactor = (this.model.get('width') / this.model.get('scale'))/2;
+        let hScalingFactor = (this.model.get('width') / this.model.get('scale'))/2;
         
         // Tell the shildren what to listen to
         element.listenTo(this, 'render', () => {
             requestedPos = [(requestedPos[0] - 1) * this.model.get('unit_y') / 2, (requestedPos[1] - 1) * this.model.get('unit_x') / 2];
             element.$el.css('top', requestedPos[0]);
             element.$el.css('left', requestedPos[1]);
-            element.$el.css('width', this.model.get('unit_x') * scalingFactor);
-            element.$el.css('height', this.model.get('unit_y') * scalingFactor);
-            element.$el.css('background-size', this.model.get('unit_x') * scalingFactor);
+            element.$el.css('width', this.model.get('unit_x') * wScalingFactor);
+            element.$el.css('height', this.model.get('unit_y') * hScalingFactor);
+            element.$el.css('background-size', (this.model.get('unit_x') * wScalingFactor) + 'px ' + (this.model.get('unit_y') * hScalingFactor +'px'));
 
             element.render();
         });
