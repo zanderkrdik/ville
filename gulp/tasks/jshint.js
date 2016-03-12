@@ -10,7 +10,8 @@ const
 const PLUGIN_NAME = 'jshint-code-rem';
 
 const SKIPCODES = [
-    'W097' //DESC: Use the function form of `use strict`.
+    'W097', //DESC: Use the function form of `use strict`.
+    'W098', //DESC: '$' is defined but never used.
 ];
 
 

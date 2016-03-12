@@ -5,8 +5,9 @@ var
     Backbone = require('backbone'),
     Marionette = require('backbone.marionette');
 
-var 
-    PlayingField = require('./js/PlayingField');
+var
+    PlayingField = require('./js/PlayingField'),
+    House = require('./js/House.js');
 
 
 // A global view containing all our page elements.
@@ -15,8 +16,7 @@ var AppView = Marionette.LayoutView.extend({
     regions: {
         playingfield: '#field'
     },
-    initialize: function (options) {
-        //console.log('AppView:', options.container);
+    initialize: function () {
     },
     events: {
         'click': 'testClick'
@@ -26,21 +26,30 @@ var AppView = Marionette.LayoutView.extend({
     }
 });
 
+
 // Create our Application
 var App = Marionette.Application.extend({
-    initialize: function (options) {
+    initialize: function () {
         this.view = new AppView({ el: 'body' });
-        //console.log('My container:', options.container);
     }
 });
 
+var Res = Backbone.Collection.extend({
+    
+});
 
 var app = new App({ container: '#app' });
 app.playingfield = new PlayingField();
+app.playingfield.house = new House({pos: [1,2]});
+
+// app.playingfield.residence = new Res({});
+// app.playingfield.residence.add(new House({pos: [3,3]}));
+
 
 // Start history when our application is ready
 app.on('start', function (options) {
-    Backbone.history.start()
+    Backbone.history.start();
+    app.playingfield.house.render();
 });
 
 // Load some initial data, and then start our application

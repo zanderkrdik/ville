@@ -2,24 +2,20 @@
 
 const
     $ = require('jquery'),
-    Backbone = require('backbone');
+    Backbone = require('backbone'),
+   Marionette = require('backbone.marionette');
 
-Backbone.$ = $;
 
-const View = Backbone.View.extend({
+const View = Marionette.ItemView.extend({
+    class: 'Structure',
     $defaultEl: $('#field'),
     tagName: 'div',
     className: 'structure',
     initialize: function () {
-        this.class = this.model.get('class');
-        console.log(this.class + '.view.init');
-        this.on('render', function() {
-            console.log('rendering!');
-        });
         
         this.listenTo(this.model,'change:pos', function(i) {
             this.render();
-        })
+        });
 
 
     },
@@ -34,7 +30,8 @@ const View = Backbone.View.extend({
     events: {
         'click': 'clicktest'
     }, 
-    clicktest: function() {
+    clicktest: function(e) {
+        e.stopPropagation();
         console.log(this.class + ': Click');
     }
     

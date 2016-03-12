@@ -22,7 +22,7 @@ var
 
 var log = function(mthd, msg) {
     gutil.log('[' + gutil.colors.cyan(mthd) + '] ' + msg);
-}
+};
 
 
 // Specify the init task, just to make life easier for subsequent tasks
@@ -30,7 +30,7 @@ gulp.task('init', [], function () {
     log('init', 'Default init (NOOP)');
 });
 
-gulp.task('establish', ['init'], function (e) {
+gulp.task('establish', ['init'], function () {
     log('establish', 'Default init (NOOP)');
 });
 

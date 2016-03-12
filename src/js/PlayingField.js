@@ -15,8 +15,6 @@ const Model = Backbone.Model.extend({
         height: null,
     },
     initialize: function (opts) {
-        //console.log('PlayingField.Model.initialize');
-     
         this.on('change', this._recalc);
     },
     _recalc: function () {
@@ -39,16 +37,16 @@ const MView = Marionette.LayoutView.extend({
         'click': 'testClick',
     },
     testClick: function (e) {
+        e.stopPropagation();
         console.log('Field: testClick');
     },
     onBeforeRender: function () {
-        console.log('PlayingField.MView:onBeforeRender');
+        //console.log('PlayingField.MView:onBeforeRender');
     },
     onRender: function () {
         // <IMPORTANT> These defs are required.
         // The underlying canvas needs to know its arbitrary scale
-        var $canvas = this.$el.find('canvas');
-        console.log(this.model);
+        let $canvas = this.$el.find('canvas');
         $canvas.get(0).width = this.model.get('width');
         $canvas.get(0).height = this.model.get('height');
         // </IMPORTANT>
@@ -56,8 +54,6 @@ const MView = Marionette.LayoutView.extend({
         this._drawgrid(this.$el.find('canvas'));
     },
     _drawgrid: function ($canvas) {
-        'use strict';
-
         let ctx = $canvas.get(0).getContext('2d');
         let uX = this.model.get('unit_x');
         let uW = this.model.get('width');
