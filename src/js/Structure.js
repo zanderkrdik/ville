@@ -8,19 +8,22 @@ const
 
 const Model = Backbone.Model.extend({
     defaults: {
-        jsclass: 'Structure'    
+        jsclass: 'Structure'
     },
     initialize: function () {
-        console.log(this.get('jsclass') + '.model.init');
+       console.log(this.get('jsclass') + '.model.init');
     }
 });
 
 const MView = Marionette.ItemView.extend({
-    model: null,
+    jsclass: 'Structure',
+    Model: Model,
     $defaultEl: $('#field'),
     tagName: 'div',
     className: 'structure house',
     initialize: function (opts) {
+        console.log(this.jsclass + ".initialize");
+      
         // TODO: Breaks if we don't have SOMETHIGN specified
         // TODO: Change xy to rc in opts. 
 
@@ -30,33 +33,35 @@ const MView = Marionette.ItemView.extend({
         }
         
         let a;
-        
+ 
         if (opts.pos) {
             a = {
-                class: this.class,
                 pos: opts.pos,
                 x: opts.pos[0],
                 y: opts.pos[1]    
             };
         } else {
             a = {
-                class: this.class,
                 pos: [opts.x, opts.y],
                 x: opts.x,
                 y: opts.y    
             };
         }
         
-        this.model = new Model(a);
+        a.jsclass = this.jsclass;
         
+        this.model = new Model(a);
         this.listenTo(this.model,'change:pos', function(i) {
             this.render();
         });
 
+        this.on('render', function() {
+            this.render();
+        });
 
     },
     render: function () {
-        console.log(this.model.get('jsclass') + '.view.render');
+        console.log(this.jsclass + '.render');
         let $attachEl =
             'undefined' !== typeof this.$parentEl ?
             this.$parentEl : this.$defaultEl;

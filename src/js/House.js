@@ -2,16 +2,15 @@
 
 const Structure = require('./Structure.js');
 
-class House extends Structure {
-    init() {
-        this.view.$el.addClass('house');
-        //this.render();
-        //console.log(this);
-    }
-    
-    describe() {
-        console.log(this);
-    }
-}
+const MView = Structure.extend({
+    jsclass: 'House'
+});
 
-module.exports = House;
+// MView.Model.extend({
+//    initialize: function() {
+//        console.log('init');
+//    } 
+// });
+
+
+module.exports = MView;

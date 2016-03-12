@@ -35,22 +35,17 @@ var App = Marionette.Application.extend({
     }
 });
 
-var Res = Backbone.Collection.extend({
-    
-});
 
 var app = new App({ container: '#app' });
 app.playingfield = new PlayingField();
-app.playingfield.house = new Structure({pos: [1,2]});
-
-// app.playingfield.residence = new Res({});
-// app.playingfield.residence.add(new House({pos: [3,3]}));
+app.playingfield.house = new House({pos: [1,2]});
 
 
 // Start history when our application is ready
 app.on('start', function (options) {
     Backbone.history.start();
     app.playingfield.house.render();
+    
 });
 
 // Load some initial data, and then start our application
