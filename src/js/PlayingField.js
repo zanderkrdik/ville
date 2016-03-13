@@ -7,10 +7,9 @@
 
 const
     Backbone = require('backbone'),
-    Marionette = require('backbone.marionette'), 
-    log = require('loglevel').getLogger('PlayingField');
-
-log.setLevel('trace', true);
+    Marionette = require('backbone.marionette'),
+    log = require('loglevel')
+        .getLogger('PlayingField');
 
 const Model = Backbone.Model.extend({
     defaults: {
@@ -21,6 +20,7 @@ const Model = Backbone.Model.extend({
             width: null,
             height: null,
         },
+        // `canvas` 
         canvas: {
             width: null,
             height: null,
@@ -72,8 +72,8 @@ const MView = Marionette.LayoutView.extend({
             let hScalingFactor = (mEl.height / mCanvas.scale);
             let pospx = [(pos[0] - 1) * mCanvas.unitHeight, (pos[1] - 1) * mCanvas.unitWidth];
             element.$el
-                .css('top', pospx[0]* hScalingFactor)
-                .css('left', pospx[1]* wScalingFactor)
+                .css('top', pospx[0] * hScalingFactor)
+                .css('left', pospx[1] * wScalingFactor)
                 .css('width', mCanvas.unitWidth * wScalingFactor)
                 .css('height', mCanvas.unitHeight * hScalingFactor)
                 .css('background-size', (mCanvas.unitWidth * wScalingFactor) + 'px ' + (mCanvas.unitHeight * hScalingFactor + 'px'));
