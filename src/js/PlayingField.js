@@ -7,7 +7,8 @@
 
 const
     Backbone = require('backbone'),
-    Marionette = require('backbone.marionette');
+    Marionette = require('backbone.marionette'), 
+    log = require('loglevel');
 
 const Model = Backbone.Model.extend({
     defaults: {
@@ -35,7 +36,7 @@ const Model = Backbone.Model.extend({
         this._recalc();
     },
     _recalc: function () {
-        console.log('PlayingField.model._recalc');
+        log.trace('PlayingField.model._recalc');
         this.attributes.canvas.width = this.attributes.canvas.scale;
         this.attributes.canvas.height = this.attributes.canvas.scale * (this.attributes.el.height / this.attributes.el.width);
     }
@@ -46,7 +47,7 @@ const MView = Marionette.LayoutView.extend({
     model: null,
     template: '#PlayingFieldView',
     initialize: function () {
-        console.log('PlayingField.initialize');
+        log.trace('PlayingField.initialize');
         this.model = new Model({
             el: {
                 width: this.$el.width(),
@@ -80,14 +81,14 @@ const MView = Marionette.LayoutView.extend({
     zoomin: function () {
         let mCanvas = this.model.get('canvas');
         mCanvas.scale = mCanvas.scale / 2;
-        console.log('PlayingField.zoomin [%s]', mCanvas.scale);
+        log.debug('PlayingField.zoomin [%s]', mCanvas.scale);
         this.model.set('canvas', mCanvas);
         this.render();
     },
     zoomout: function () {
         let mCanvas = this.model.get('canvas');
         mCanvas.scale = mCanvas.scale * 2;
-        console.log('PlayingField.zoomout [%s]', mCanvas.scale);
+        log.debug('PlayingField.zoomout [%s]', mCanvas.scale);
         this.model.set('canvas', mCanvas);
         this.render();
     },
@@ -95,15 +96,15 @@ const MView = Marionette.LayoutView.extend({
         'click': 'testClick',
     },
     testClick: function (e) {
+        log.trace('PlayingField:testClick');
         e.stopPropagation();
-        console.log('PlayingField:testClick');
     },
     onBeforeRender: function () {
-        console.log('PlayingField:onBeforeRender');
+        log.trace('PlayingField:onBeforeRender');
         this.model._recalc();
     },
     onRender: function () {
-        console.log('PlayingField:onRender');
+        log.trace('PlayingField:onRender');
         // <IMPORTANT> These defs are required.
         // The underlying canvas needs to know its arbitrary scale
         let $canvas = this.$el.find('canvas');
@@ -115,7 +116,7 @@ const MView = Marionette.LayoutView.extend({
         this._drawgrid($canvas);
     },
     _drawgrid: function ($canvas) {
-        console.log('PlayingField._drawgrid');
+        log.trace('PlayingField._drawgrid');
         let ctx = $canvas.get(0).getContext('2d');
         let mCanvas = this.model.get('canvas');
 
@@ -125,7 +126,7 @@ const MView = Marionette.LayoutView.extend({
         
         //clear any previously drawn elements
         ctx.clearRect(0, 0, mCanvas.width, mCanvas.height);
-        console.log(mCanvas.height);
+        log.debug(mCanvas.height);
         // Columns
         for (let i = mCanvas.unitWidth; i < mCanvas.width; i = i + mCanvas.unitWidth) {
             ctx.beginPath();

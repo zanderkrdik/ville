@@ -33,9 +33,10 @@
   "dependencies": {
     "backbone": "^1.2.3",
     "jquery": "^2.2.0",
+    "loglevel": "^1.4.0",
     "underscore": "^1.8.3"
-  }, 
-  "gulp" : {
-      "taskDir": "./gulp/tasks"
+  },
+  "gulp": {
+    "taskDir": "./gulp/tasks"
   }
 }

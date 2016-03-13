@@ -3,7 +3,8 @@
 
 var
     Backbone = require('backbone'),
-    Marionette = require('backbone.marionette');
+    Marionette = require('backbone.marionette'),
+    log = require('loglevel');
 
 var
     //Structure = require('./js/Structure.js'),
@@ -13,6 +14,7 @@ var
     Barn = require('./js/Barn.js'),
     PlayingField = require('./js/PlayingField');
 
+log.setLevel("trace", true);
 
 // A global view containing all our page elements.
 var AppView = Marionette.LayoutView.extend({
@@ -27,7 +29,7 @@ var AppView = Marionette.LayoutView.extend({
         'click': 'testClick'
     },
     testClick: function (e) {
-        console.log('App: testClick');
+        log.trace('App: testClick');
     }
 });
 
@@ -35,6 +37,7 @@ var AppView = Marionette.LayoutView.extend({
 // Create our Application
 var App = Marionette.Application.extend({
     initialize: function () {
+        log.trace('App.initialize');
         this.view = new AppView({ el: 'body' });
     }
 });

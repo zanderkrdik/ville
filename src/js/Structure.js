@@ -3,7 +3,8 @@
 const
     $ = require('jquery'),
     Backbone = require('backbone'),
-    Marionette = require('backbone.marionette');
+    Marionette = require('backbone.marionette'),
+    log = require('loglevel');
 
 
 const Model = Backbone.Model.extend({
@@ -11,7 +12,7 @@ const Model = Backbone.Model.extend({
         jsclass: 'Structure'
     },
     initialize: function () {
-        console.log(this.get('jsclass') + '.model.init');
+        log.trace(this.get('jsclass') + '.model.init');
     }
 });
 
@@ -22,14 +23,14 @@ const MView = Marionette.ItemView.extend({
     template: '<div></div>',
     className: 'structure house',
     initialize: function (opts) {
-        console.log(this.jsclass + ".initialize");
+        log.trace(this.jsclass + ".initialize");
         this.model = new this.Model();
     },
     onBeforeRender: function () {
-        console.log(this.jsclass + ':onBeforeRender');
+        log.trace(this.jsclass + ':onBeforeRender');
     },
     onRender: function () {
-        console.log(this.jsclass + ':onRender');
+        log.trace(this.jsclass + ':onRender');
         let $attachEl =
             'undefined' !== typeof this.$parentEl ?
                 this.$parentEl : this.$defaultEl;
@@ -43,7 +44,7 @@ const MView = Marionette.ItemView.extend({
         e.stopPropagation();
     },
     clicktest: function (e) {
-        console.log(this.jsclass + ':clicktest');
+        log.trace(this.jsclass + ':clicktest');
         this.preventPropagation(e);
         if (!this.model.get('selected')) { 
             $(e.currentTarget).css('background-color','green');
