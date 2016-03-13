@@ -48,13 +48,13 @@ const MView = Marionette.ItemView.extend({
     clicktest: function (e) {
         log.trace(this._banner + ':clicktest');
         e.stopPropagation();
-        // if (!this.model.get('selected')) { 
-        //     $(e.currentTarget).css('background-color','green');
-        //     this.model.set('selected',true);
-        // } else {
-        //     $(e.currentTarget).css('background-color','');
-        //     this.model.set('selected',false);
-        // }
+        if (!this.selected) { 
+            this.$el.css('background-color','green');
+            this.selected = true;
+        } else {
+            this.$el.css('background-color','');
+            this.selected = false;
+        }
     }
 
 });

@@ -40,32 +40,28 @@ const Model = Backbone.Model.extend({
         if (this.attributes.unit.width * sf < this.attributes.el.width / this._FIXME_MaxXTiles) {
             return false;
         }
-            this.set('unit', {
-                width: this.attributes.unit.width * sf,
-                height: this.attributes.unit.height * sf
-            });
-            return true;
-        
+        this.set('unit', {
+            width: this.attributes.unit.width * sf,
+            height: this.attributes.unit.height * sf
+        });
+        return true;
+
     }
 });
 
 
 const MView = Marionette.LayoutView.extend({
     _banner: null,
-    el: '#field',
     Model: Model,
     template: '#PlayingFieldView',
+    regions: {
+        structure: '.structure'
+    },  
     initialize: function () {
         this._banner = 'PlayingField[' + this.cid + ']';
         log.trace(this._banner + '.initialize');
-        this.model = new this.Model({
-            el: {
-                width: this.$el.width(),
-                height: this.$el.height(),
-            }
-        });
     },
-    add: function (element, pos) {
+    onShow: function (element, pos) {
         if (!element || !pos) {
             throw new Error('Both element & position must be specified upon PlayingField.addStructure');
         }
@@ -101,10 +97,17 @@ const MView = Marionette.LayoutView.extend({
         //e.stopPropagation();
     },
     onBeforeRender: function () {
-        //log.trace(this._banner + ':onBeforeRender');
-    },
+        log.trace(this._banner + ':onBeforeRender');
+        this.model = new this.Model({
+            el: {
+                width: this._parent.$el.width(),
+                height: this._parent.$el.height(),
+            }
+        });
+     },
     onRender: function () {
         log.trace(this._banner + ':onRender');
+        log.debug(this.$el.width());
         let $canvas = this.$el.find('canvas');
         if ($canvas) {
             let mel = this.model.get('el');
@@ -118,7 +121,7 @@ const MView = Marionette.LayoutView.extend({
     _drawgrid: function ($canvas) {
         log.trace(this._banner + '._drawgrid');
         if (!$canvas) {
-            throw new Error('Inavalid Usage: '+ this._banner + '._drawgrid(JQuery: $canvas)');
+            throw new Error('Inavalid Usage: ' + this._banner + '._drawgrid(JQuery: $canvas)');
         }
 
         let ctx = $canvas.get(0).getContext('2d');
@@ -146,7 +149,7 @@ const MView = Marionette.LayoutView.extend({
             ctx.lineTo(mel.width, i);
             ctx.stroke();
         }
-    }, 
+    },
 
 });
 

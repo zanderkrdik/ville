@@ -7,26 +7,36 @@ const
     log = require('loglevel');
 
 const MView = Marionette.ItemView.extend({
-    el: '#fieldcontrols',
     template: '#PlayingFieldControlsView',
     initialize: function() {
-        log.trace('Controls.view|initialize');
-        this.render();
+        log.trace('.initialize');
     },
     events: {
         'click #timecontrol': 'startstop',
         'click #zoomin': 'zoomin',
         'click #zoomout': 'zoomout'
     },
+    onBeforeShow: function() {
+        log.trace(':onBeforeShow');        
+    },
+    onShow: function() {
+        log.trace(':onShow');        
+    },
+    onRender: function() {
+        log.trace(':onRender');        
+    },
+    onBeforeRender: function() {
+        log.trace(':onBeforeRender');        
+    },
     startstop: function(e) {
-        log.trace('click');
+        log.trace('.startstop');
     },
     zoomin: function(e) {
-        log.trace('click');
+        log.trace('.zoomin');
         this.trigger('zoomin');
     },
     zoomout: function(e) {
-        log.trace('click');
+        log.trace('.zoomout');
         this.trigger('zoomout');
     }
 

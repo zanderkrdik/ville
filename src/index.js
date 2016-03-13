@@ -16,52 +16,52 @@ var
 
 log.setLevel("trace", true);
 
-// A global view containing all our page elements.
-var AppView = Marionette.LayoutView.extend({
-    el: null, //let controller define this
-    regions: {
-        playingfield: '#field',
-        playingfieldcontrols: '#fieldcontrols'
-    },
-    initialize: function () {
-    },
-    events: {
-        'click': 'testClick'
-    },
-    testClick: function (e) {
-        log.trace('App: testClick');
-    }
-});
-
 
 // Create our Application
 var App = Marionette.Application.extend({
     initialize: function () {
         log.trace('App.initialize');
-        this.view = new AppView({ el: 'body' });
+    },
+    regions: {
+        playingfield: '#field',
+        playingfieldcontrols: '#fieldcontrols'
+    },
+    events: {
+        'click': 'testClick'
+    },
+    testClick: function (e) {
+        log.trace('App:testClick');
     }
-});
 
+});
 
 var app = new App({ container: '#app' });
-app.controls = new Controls();
-app.playingfield = new PlayingField();
-app.playingfield.listenTo(app.controls, 'zoomin', function() {
-    this.zoomin();
-});
-app.playingfield.listenTo(app.controls, 'zoomout', function() {
-    this.zoomout();
-});
-app.playingfield.add(new House(),[1, 2]);
-app.playingfield.add(new Forest(),[2, 1]);
-app.playingfield.add(new Barn(),[3, 3]);
 
+app.playingfieldcontrols.show(new Controls());
+app.playingfield.show(new PlayingField());
+
+
+
+
+
+// bind the controls to the methods
+app.playingfield.listenTo(app.playingfieldcontrols, 'zoomin', function () {
+    app.playingfield.zoomin();
+});
+app.playingfield.listenTo(app.playingfieldcontrols, 'zoomout', function () {
+    app.playingfield.zoomout();
+});
+
+// // add new structures
+app.playingfield.show(new House(), [1, 2]);
+app.playingfield.show(new Forest(), [2, 1]);
+app.playingfield.show(new Barn(), [3, 3]);
 
 // Start history when our application is ready
-app.on('start', function (options) {
-    Backbone.history.start();
-    app.playingfield.render();
-});
+// app.on('start', function (options) {
+    //Backbone.history.start();
+//     app.playingfield.render();
+// });
 
 // Load some initial data, and then start our application
 app.start({});
