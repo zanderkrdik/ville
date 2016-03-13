@@ -8,7 +8,9 @@
 const
     Backbone = require('backbone'),
     Marionette = require('backbone.marionette'), 
-    log = require('loglevel');
+    log = require('loglevel').getLogger('PlayingField');
+
+log.setLevel('trace', true);
 
 const Model = Backbone.Model.extend({
     defaults: {

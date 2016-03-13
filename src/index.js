@@ -14,7 +14,7 @@ var
     Barn = require('./js/Barn.js'),
     PlayingField = require('./js/PlayingField');
 
-log.setLevel("trace", true);
+log.setLevel("info", true);
 
 // A global view containing all our page elements.
 var AppView = Marionette.LayoutView.extend({
