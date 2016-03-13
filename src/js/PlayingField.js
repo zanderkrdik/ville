@@ -11,6 +11,9 @@ const
 
 const Model = Backbone.Model.extend({
     defaults: {
+        // `el` represents the core drawing element
+        // this representation used to calculate locations
+        // bound to the view's change events.
         el: {
             width: null,
             height: null,
@@ -19,18 +22,16 @@ const Model = Backbone.Model.extend({
             width: null,
             height: null,
             scale: 1000,
-            unitWidth: 50,
-            unitHeight: 50
+            unitWidth: 100,
+            unitHeight: 100
         },
     },
     initialize: function () {
-        // Check for el 
         let el = this.get('el');
         if (!el.height || !el.width) {
             throw new Error('Must specify the element width & height on construction');
         }
 
-        this.on('change', this._recalc);
         this._recalc();
     },
     _recalc: function () {
@@ -59,21 +60,22 @@ const MView = Marionette.LayoutView.extend({
             throw new Error('Both element & position must be specified upon PlayingField.addStructure');
         }
 
-        let mCanvas = this.model.get('canvas');
-        let wScalingFactor = (mCanvas.width / mCanvas.scale) / 2;
-        let hScalingFactor = (mCanvas.height / mCanvas.scale) / 2;
-        
-        // Tell the shildren what to listen to
-        element.listenTo(this, 'render', () => {
-            let pospx = [(pos[0] - 1) * mCanvas.unitHeight / 2, (pos[1] - 1) * mCanvas.unitWidth / 2];
+        // Tell the children to listen to our render event
+        //let self = this;
+        element.listenTo(this, 'render', function (self) {
+            let mCanvas = self.model.get('canvas');
+            let mEl = self.model.get('el');
+            let wScalingFactor = (mEl.width / mCanvas.scale);
+            let hScalingFactor = (mEl.height / mCanvas.scale);
+            let pospx = [(pos[0] - 1) * mCanvas.unitHeight, (pos[1] - 1) * mCanvas.unitWidth];
             element.$el
-                .css('top', pospx[0])
-                .css('left', pospx[1])
+                .css('top', pospx[0]* hScalingFactor)
+                .css('left', pospx[1]* wScalingFactor)
                 .css('width', mCanvas.unitWidth * wScalingFactor)
                 .css('height', mCanvas.unitHeight * hScalingFactor)
                 .css('background-size', (mCanvas.unitWidth * wScalingFactor) + 'px ' + (mCanvas.unitHeight * hScalingFactor + 'px'));
             element.render();
-        });
+        }, this);
     },
     zoomin: function () {
         let mCanvas = this.model.get('canvas');
@@ -98,6 +100,7 @@ const MView = Marionette.LayoutView.extend({
     },
     onBeforeRender: function () {
         console.log('PlayingField:onBeforeRender');
+        this.model._recalc();
     },
     onRender: function () {
         console.log('PlayingField:onRender');
@@ -122,7 +125,7 @@ const MView = Marionette.LayoutView.extend({
         
         //clear any previously drawn elements
         ctx.clearRect(0, 0, mCanvas.width, mCanvas.height);
-        
+        console.log(mCanvas.height);
         // Columns
         for (let i = mCanvas.unitWidth; i < mCanvas.width; i = i + mCanvas.unitWidth) {
             ctx.beginPath();
