@@ -3,13 +3,14 @@
 const
     $ = require('jquery'),
     Backbone = require('backbone'),
-    Marionette = require('backbone.marionette');
+    Marionette = require('backbone.marionette'),
+    log = require('loglevel');
 
 const MView = Marionette.ItemView.extend({
     el: '#fieldcontrols',
     template: '#PlayingFieldControlsView',
     initialize: function() {
-        console.log('Controls.view|initialize');
+        log.trace('Controls.view|initialize');
         this.render();
     },
     events: {
@@ -18,14 +19,14 @@ const MView = Marionette.ItemView.extend({
         'click #zoomout': 'zoomout'
     },
     startstop: function(e) {
-        console.log('click');
+        log.trace('click');
     },
     zoomin: function(e) {
-        console.log('click');
+        log.trace('click');
         this.trigger('zoomin');
     },
     zoomout: function(e) {
-        console.log('click');
+        log.trace('click');
         this.trigger('zoomout');
     }
 

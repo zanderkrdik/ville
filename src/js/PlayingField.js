@@ -7,127 +7,146 @@
 
 const
     Backbone = require('backbone'),
-    Marionette = require('backbone.marionette');
+    Marionette = require('backbone.marionette'),
+    log = require('loglevel')
+        .getLogger('PlayingField');
 
 const Model = Backbone.Model.extend({
+    _FIXME_MaxXTiles: 8,
     defaults: {
-        $realElement: null,
-        // the arbitrary internal scale of the drawing area
-        scale: 1000, 
-        // the x side length of a single cell, in terms of `scale`
-        unit_x: 50, 
-        // the y side length of a single cell, in terms of `scale`
-        unit_y: 50,
-        width: null,
-        // keep it square for now
-        height: null,
+        unit: {
+            width: 1,
+            height: 1
+        },
+        el: {
+            width: null,
+            height: null,
+        },
     },
-    initialize: function (opts) {
-        this.on('change', this._recalc);
+    initialize: function () {
+        let el = this.get('el');
+        if (!el.height || !el.width) {
+            throw new Error('Must specify the element width & height on construction');
+        }
+        this.set('unit', {
+            width: el.width / this._FIXME_MaxXTiles,
+            height: el.height / this._FIXME_MaxXTiles
+        });
     },
-    _recalc: function () {
-        console.log('PlayingField.model._recalc');
-        let $rel = this.attributes.$realElement;
-        this.attributes.width = this.attributes.scale;
-        this.attributes.height = this.attributes.scale * ($rel.height() / $rel.width());
+    scale: function (sf) {
+        if (this.attributes.unit.width * sf > this.attributes.el.width) {
+            return false;
+        }
+        if (this.attributes.unit.width * sf < this.attributes.el.width / this._FIXME_MaxXTiles) {
+            return false;
+        }
+            this.set('unit', {
+                width: this.attributes.unit.width * sf,
+                height: this.attributes.unit.height * sf
+            });
+            return true;
+        
     }
 });
 
+
 const MView = Marionette.LayoutView.extend({
+    _banner: null,
     el: '#field',
-    model: null,
+    Model: Model,
     template: '#PlayingFieldView',
     initialize: function () {
-        console.log('PlayingField.initialize');
-        this.model = new Model();
-        this.model.set('$realElement', this.$el);
-        this.render();
+        this._banner = 'PlayingField[' + this.cid + ']';
+        log.trace(this._banner + '.initialize');
+        this.model = new this.Model({
+            el: {
+                width: this.$el.width(),
+                height: this.$el.height(),
+            }
+        });
     },
-    add: function (element) {
-        if (!element) {
-            return;
+    add: function (element, pos) {
+        if (!element || !pos) {
+            throw new Error('Both element & position must be specified upon PlayingField.addStructure');
         }
 
-        let requestedPos = element.model.get('pos');
-        let wScalingFactor = (this.model.get('width') / this.model.get('scale'))/2;
-        let hScalingFactor = (this.model.get('height') / this.model.get('scale'))/2;
-        
-        // Tell the shildren what to listen to
-        element.listenTo(this, 'render', () => {
-            requestedPos = [(requestedPos[0] - 1) * this.model.get('unit_y') / 2, (requestedPos[1] - 1) * this.model.get('unit_x') / 2];
-            element.$el.css('top', requestedPos[0]);
-            element.$el.css('left', requestedPos[1]);
-            element.$el.css('width', this.model.get('unit_x') * wScalingFactor);
-            element.$el.css('height', this.model.get('unit_y') * hScalingFactor);
-            element.$el.css('background-size', (this.model.get('unit_x') * wScalingFactor) + 'px ' + (this.model.get('unit_y') * hScalingFactor +'px'));
-
+        //Tell the children to listen to our render event
+        element.listenTo(this, 'render', function (self) {
+            let unit = self.model.get('unit');
+            let pospx = [(pos[0] - 1) * unit.height, (pos[1] - 1) * unit.width];
+            element.$el
+                .css('top', pospx[0])
+                .css('left', pospx[1])
+                .css('width', unit.width)
+                .css('height', unit.height)
+                .css('background-size', unit.width + 'px ' + unit.height + 'px');
             element.render();
-        });
-
+        }, this);
     },
-    zoomin: function() {
-        let scale = this.model.get('scale');
-        console.log('PlayingField.zoomin [%s]', scale);
-        this.model.set('scale',scale / 2);
-        this.render();
+    zoomin: function () {
+        if (this.model.scale(2)) {
+            this.render();
+        }
     },
-    zoomout: function() {
-        let scale = this.model.get('scale');
-        console.log('PlayingField.zoomout [%s]', scale);
-        this.model.set('scale',scale * 2);
-        this.render();
+    zoomout: function () {
+        if (this.model.scale(0.5)) {
+            this.render();
+        }
     },
     events: {
         'click': 'testClick',
     },
     testClick: function (e) {
-        e.stopPropagation();
-        console.log('PlayingField:testClick');
+        log.trace(this._banner + ':testClick');
+        //e.stopPropagation();
     },
     onBeforeRender: function () {
-        console.log('PlayingField:onBeforeRender');
+        //log.trace(this._banner + ':onBeforeRender');
     },
     onRender: function () {
-        console.log('PlayingField:onRender');
-        // <IMPORTANT> These defs are required.
-        // The underlying canvas needs to know its arbitrary scale
+        log.trace(this._banner + ':onRender');
         let $canvas = this.$el.find('canvas');
-        $canvas.get(0).width = this.model.get('width');
-        $canvas.get(0).height = this.model.get('height');
-        // </IMPORTANT>
-
-        this._drawgrid($canvas);
+        if ($canvas) {
+            let mel = this.model.get('el');
+            // <IMPORTANT> This configures canvas' scale.
+            $canvas.get(0).width = mel.width;
+            $canvas.get(0).height = mel.height;
+            // </IMPORTANT>
+            this._drawgrid($canvas);
+        }
     },
     _drawgrid: function ($canvas) {
-        let ctx = $canvas.get(0).getContext('2d');
-        let uX = this.model.get('unit_x');
-        let uW = this.model.get('width');
-        let uY = this.model.get('unit_y');
-        let uH = this.model.get('height');
-
-        if (!ctx) {
-            throw new Error('PlayingField.MView._drawgrid: No canvas context found. Init error?');
+        log.trace(this._banner + '._drawgrid');
+        if (!$canvas) {
+            throw new Error('Inavalid Usage: '+ this._banner + '._drawgrid(JQuery: $canvas)');
         }
+
+        let ctx = $canvas.get(0).getContext('2d');
+        if (!ctx) {
+            throw new Error('No Context: ' + this._banner + '.MView._drawgrid: No canvas context found. Init error?');
+        }
+
+        let unit = this.model.get('unit');
+        let mel = this.model.get('el');
         
-        //clear any previously drawn elements
-        ctx.clearRect(0,0,uW,uH);
+        // clear any previously drawn elements
+        ctx.clearRect(0, 0, mel.width, mel.height);
         
-        // Columns
-        for (let i = uX; i < uW; i = i + uX) {
+        // draw columns
+        for (let i = unit.width; i < mel.width; i = i + unit.width) {
             ctx.beginPath();
             ctx.moveTo(i, 0);
-            ctx.lineTo(i, uH);
+            ctx.lineTo(i, mel.height);
             ctx.stroke();
         }
-
-        // Rows
-        for (let i = uY; i < uH; i = i + uY) {
+        // draw rows
+        for (let i = unit.height; i < mel.height; i = i + unit.height) {
             ctx.beginPath();
             ctx.moveTo(0, i);
-            ctx.lineTo(uW, i);
+            ctx.lineTo(mel.width, i);
             ctx.stroke();
         }
-    }
+    }, 
 
 });
 

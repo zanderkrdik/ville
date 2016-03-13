@@ -3,86 +3,58 @@
 const
     $ = require('jquery'),
     Backbone = require('backbone'),
-    Marionette = require('backbone.marionette');
+    Marionette = require('backbone.marionette'),
+    log = require('loglevel');
 
 
 const Model = Backbone.Model.extend({
+    _banner: null,
     defaults: {
         jsclass: 'Structure'
     },
     initialize: function () {
-        console.log(this.get('jsclass') + '.model.init');
+        this._banner = '';
+        //log.trace(this.get('jsclass') + '.model.init');
     }
 });
 
 const MView = Marionette.ItemView.extend({
+    _banner: null,
     jsclass: 'Structure',
     Model: Model,
     $defaultEl: $('#field'),
     template: '<div></div>',
     className: 'structure house',
     initialize: function (opts) {
-        console.log(this.jsclass + ".initialize");
-      
-        // TODO: Breaks if we don't have SOMETHIGN specified
-        // TODO: Change xy to rc in opts. 
-
-        if (!opts || !(opts.pos || (opts.x && opts.y)) || (opts.pos && (opts.x || opts.y))) {
-            console.log('broken');
-            return;
-        }
-
-        let a;
-
-        if (opts.pos) {
-            a = {
-                pos: opts.pos,
-                x: opts.pos[0],
-                y: opts.pos[1]
-            };
-        } else {
-            a = {
-                pos: [opts.x, opts.y],
-                x: opts.x,
-                y: opts.y
-            };
-        }
-
-        a.jsclass = this.jsclass;
-
-        this.model = new Model(a);
-        this.listenTo(this.model, 'change:pos', function (i) {
-            this.render();
-        });
-
+        this._banner = this.jsclass + '[' + this.cid + ']';
+        log.trace(this._banner + ".initialize");
+        //this.model = new this.Model();
     },
     onBeforeRender: function () {
-        console.log(this.jsclass + ':onBeforeRender');
+        log.trace(this._banner + ':onBeforeRender');
     },
     onRender: function () {
-        console.log(this.jsclass + ':onRender');
-        let $attachEl =
-            'undefined' !== typeof this.$parentEl ?
-                this.$parentEl : this.$defaultEl;
-        $attachEl.append(this.$el);
+        log.trace(this._banner + ':onRender');
+        this.$defaultEl.append(this.$el);
     },
     events: {
         'dblclick': 'preventPropagation',
         'click': 'clicktest'
     },
     preventPropagation: function(e) {
+        log.trace(this._banner + ':preventPropagation');
         e.stopPropagation();
     },
     clicktest: function (e) {
-        console.log(this.jsclass + ':clicktest');
-        this.preventPropagation(e);
-        if (!this.model.get('selected')) { 
-            $(e.currentTarget).css('background-color','green');
-            this.model.set('selected',true);
-        } else {
-            $(e.currentTarget).css('background-color','');
-            this.model.set('selected',false);
-        }
+        log.trace(this._banner + ':clicktest');
+        e.stopPropagation();
+        // if (!this.model.get('selected')) { 
+        //     $(e.currentTarget).css('background-color','green');
+        //     this.model.set('selected',true);
+        // } else {
+        //     $(e.currentTarget).css('background-color','');
+        //     this.model.set('selected',false);
+        // }
     }
 
 });

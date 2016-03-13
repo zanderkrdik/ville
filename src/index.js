@@ -3,7 +3,8 @@
 
 var
     Backbone = require('backbone'),
-    Marionette = require('backbone.marionette');
+    Marionette = require('backbone.marionette'),
+    log = require('loglevel');
 
 var
     //Structure = require('./js/Structure.js'),
@@ -13,6 +14,7 @@ var
     Barn = require('./js/Barn.js'),
     PlayingField = require('./js/PlayingField');
 
+log.setLevel("trace", true);
 
 // A global view containing all our page elements.
 var AppView = Marionette.LayoutView.extend({
@@ -27,7 +29,7 @@ var AppView = Marionette.LayoutView.extend({
         'click': 'testClick'
     },
     testClick: function (e) {
-        console.log('App: testClick');
+        log.trace('App: testClick');
     }
 });
 
@@ -35,6 +37,7 @@ var AppView = Marionette.LayoutView.extend({
 // Create our Application
 var App = Marionette.Application.extend({
     initialize: function () {
+        log.trace('App.initialize');
         this.view = new AppView({ el: 'body' });
     }
 });
@@ -49,9 +52,9 @@ app.playingfield.listenTo(app.controls, 'zoomin', function() {
 app.playingfield.listenTo(app.controls, 'zoomout', function() {
     this.zoomout();
 });
-app.playingfield.add(new House({ pos: [1, 2] }));
-app.playingfield.add(new Forest({ pos: [3, 3] }));
-app.playingfield.add(new Barn({ pos: [2, 1] }));
+app.playingfield.add(new House(),[1, 2]);
+app.playingfield.add(new Forest(),[2, 1]);
+app.playingfield.add(new Barn(),[3, 3]);
 
 
 // Start history when our application is ready

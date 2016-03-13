@@ -1,22 +1,24 @@
 'use strict';
 
-const $ = require('jquery');
+const 
+    log = require('loglevel'),
+    $ = require('jquery');
 
 const Structure = require('./Structure.js');
 
 const MView = Structure.extend({
-    jsclass: 'Structure|Barn',
+    jsclass: 'Barn',
     className: 'structure barn',
     clicktest: function (e) {
-        console.log(this.jsclass + ':clicktest');
+        log.trace(this._banner + ':clicktest');
         this.preventPropagation(e);
-        if (!this.model.get('selected')) {
-            $(e.currentTarget).css('background-color', 'red');
-            this.model.set('selected', true);
-        } else {
-            $(e.currentTarget).css('background-color', '');
-            this.model.set('selected', false);
-        }
+        // if (!this.model.get('selected')) {
+        //     $(e.currentTarget).css('background-color', 'red');
+        //     this.model.set('selected', true);
+        // } else {
+        //     $(e.currentTarget).css('background-color', '');
+        //     this.model.set('selected', false);
+        // }
     }
 
 });
