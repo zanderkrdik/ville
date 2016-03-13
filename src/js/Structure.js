@@ -23,38 +23,7 @@ const MView = Marionette.ItemView.extend({
     className: 'structure house',
     initialize: function (opts) {
         console.log(this.jsclass + ".initialize");
-      
-        // TODO: Breaks if we don't have SOMETHIGN specified
-        // TODO: Change xy to rc in opts. 
-
-        if (!opts || !(opts.pos || (opts.x && opts.y)) || (opts.pos && (opts.x || opts.y))) {
-            console.log('broken');
-            return;
-        }
-
-        let a;
-
-        if (opts.pos) {
-            a = {
-                pos: opts.pos,
-                x: opts.pos[0],
-                y: opts.pos[1]
-            };
-        } else {
-            a = {
-                pos: [opts.x, opts.y],
-                x: opts.x,
-                y: opts.y
-            };
-        }
-
-        a.jsclass = this.jsclass;
-
-        this.model = new Model(a);
-        this.listenTo(this.model, 'change:pos', function (i) {
-            this.render();
-        });
-
+        this.model = new this.Model();
     },
     onBeforeRender: function () {
         console.log(this.jsclass + ':onBeforeRender');

@@ -49,9 +49,9 @@ app.playingfield.listenTo(app.controls, 'zoomin', function() {
 app.playingfield.listenTo(app.controls, 'zoomout', function() {
     this.zoomout();
 });
-app.playingfield.add(new House({ pos: [1, 2] }));
-app.playingfield.add(new Forest({ pos: [3, 3] }));
-app.playingfield.add(new Barn({ pos: [2, 1] }));
+app.playingfield.add(new House(),[1, 2]);
+app.playingfield.add(new Forest(),[2, 1]);
+app.playingfield.add(new Barn(),[3, 3]);
 
 
 // Start history when our application is ready
