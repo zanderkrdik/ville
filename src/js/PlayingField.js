@@ -12,10 +12,11 @@ const
         .getLogger('PlayingField');
 
 const Model = Backbone.Model.extend({
+    _FIXME_MaxXTiles: 8,
     defaults: {
         unit: {
-            width: null,
-            height: null
+            width: 1,
+            height: 1
         },
         el: {
             width: null,
@@ -27,37 +28,42 @@ const Model = Backbone.Model.extend({
         if (!el.height || !el.width) {
             throw new Error('Must specify the element width & height on construction');
         }
-        //this.on('change:el', this._recalc)
-        this._recalc(el);
-    },
-    _recalc: function() {
-        log.trace('PlayingField.model._recalc');
-        let el = this.get('el');
         this.set('unit', {
-            width: el.width / 10,
-            height: el.height / 10
+            width: el.width / this._FIXME_MaxXTiles,
+            height: el.height / this._FIXME_MaxXTiles
         });
     },
-    scale: function(sf) {
-        this.set('unit', {
-            width: this.attributes.unit.width * sf,
-            height: this.attributes.unit.height * sf
-        });
+    scale: function (sf) {
+        if (this.attributes.unit.width * sf > this.attributes.el.width) {
+            return false;
+        }
+        if (this.attributes.unit.width * sf < this.attributes.el.width / this._FIXME_MaxXTiles) {
+            return false;
+        }
+            this.set('unit', {
+                width: this.attributes.unit.width * sf,
+                height: this.attributes.unit.height * sf
+            });
+            return true;
+        
     }
 });
 
+
 const MView = Marionette.LayoutView.extend({
+    _banner: null,
     el: '#field',
     Model: Model,
     template: '#PlayingFieldView',
     initialize: function () {
-        log.trace('PlayingField.initialize');
+        this._banner = 'PlayingField[' + this.cid + ']';
+        log.trace(this._banner + '.initialize');
         this.model = new this.Model({
             el: {
                 width: this.$el.width(),
                 height: this.$el.height(),
             }
-        });
+        })
     },
     add: function (element, pos) {
         if (!element || !pos) {
@@ -78,31 +84,31 @@ const MView = Marionette.LayoutView.extend({
         }, this);
     },
     zoomin: function () {
-        this.model.scale(0.5);
-        this.render();
+        if (this.model.scale(2)) {
+            this.render();
+        }
     },
     zoomout: function () {
-        this.model.scale(2);
-        this.render();
+        if (this.model.scale(0.5)) {
+            this.render();
+        }
     },
     events: {
         'click': 'testClick',
     },
     testClick: function (e) {
-        log.trace('PlayingField:testClick');
-        e.stopPropagation();
+        log.trace(this._banner + ':testClick');
+        //e.stopPropagation();
     },
     onBeforeRender: function () {
-        log.trace('PlayingField:onBeforeRender');
-        //this.model._recalc();
+        //log.trace(this._banner + ':onBeforeRender');
     },
     onRender: function () {
-        log.trace('PlayingField:onRender');
+        log.trace(this._banner + ':onRender');
         let $canvas = this.$el.find('canvas');
         if ($canvas) {
             let mel = this.model.get('el');
-            // <IMPORTANT> These defs are required.
-            // The underlying canvas needs to know its arbitrary scale
+            // <IMPORTANT> This configures canvas' scale.
             $canvas.get(0).width = mel.width;
             $canvas.get(0).height = mel.height;
             // </IMPORTANT>
@@ -110,39 +116,37 @@ const MView = Marionette.LayoutView.extend({
         }
     },
     _drawgrid: function ($canvas) {
-        log.trace('PlayingField._drawgrid');
+        log.trace(this._banner + '._drawgrid');
         if (!$canvas) {
-            throw new Error('Inavalid Usage: PlayingField._drawgrid(JQuery: $canvas)');
+            throw new Error('Inavalid Usage: '+ this._banner + '._drawgrid(JQuery: $canvas)');
         }
 
         let ctx = $canvas.get(0).getContext('2d');
         if (!ctx) {
-            throw new Error('PlayingField.MView._drawgrid: No canvas context found. Init error?');
+            throw new Error('No Context: ' + this._banner + '.MView._drawgrid: No canvas context found. Init error?');
         }
 
         let unit = this.model.get('unit');
         let mel = this.model.get('el');
-
-        log.debug('mel: %s', JSON.stringify(mel));
-        log.debug('unit: %s', JSON.stringify(unit));
         
-        //clear any previously drawn elements
+        // clear any previously drawn elements
         ctx.clearRect(0, 0, mel.width, mel.height);
-        // Columns
+        
+        // draw columns
         for (let i = unit.width; i < mel.width; i = i + unit.width) {
             ctx.beginPath();
             ctx.moveTo(i, 0);
             ctx.lineTo(i, mel.height);
             ctx.stroke();
         }
-        // Rows
+        // draw rows
         for (let i = unit.height; i < mel.height; i = i + unit.height) {
             ctx.beginPath();
             ctx.moveTo(0, i);
             ctx.lineTo(mel.width, i);
             ctx.stroke();
         }
-    }
+    }, 
 
 });
 

@@ -8,51 +8,53 @@ const
 
 
 const Model = Backbone.Model.extend({
+    _banner: null,
     defaults: {
         jsclass: 'Structure'
     },
     initialize: function () {
-        log.trace(this.get('jsclass') + '.model.init');
+        this._banner = ''
+        //log.trace(this.get('jsclass') + '.model.init');
     }
 });
 
 const MView = Marionette.ItemView.extend({
+    _banner: null,
     jsclass: 'Structure',
     Model: Model,
     $defaultEl: $('#field'),
     template: '<div></div>',
     className: 'structure house',
     initialize: function (opts) {
-        log.trace(this.jsclass + ".initialize");
-        this.model = new this.Model();
+        this._banner = this.jsclass + '[' + this.cid + ']';
+        log.trace(this._banner + ".initialize");
+        //this.model = new this.Model();
     },
     onBeforeRender: function () {
-        log.trace(this.jsclass + ':onBeforeRender');
+        log.trace(this._banner + ':onBeforeRender');
     },
     onRender: function () {
-        log.trace(this.jsclass + ':onRender');
-        let $attachEl =
-            'undefined' !== typeof this.$parentEl ?
-                this.$parentEl : this.$defaultEl;
-        $attachEl.append(this.$el);
+        log.trace(this._banner + ':onRender');
+        this.$defaultEl.append(this.$el);
     },
     events: {
         'dblclick': 'preventPropagation',
         'click': 'clicktest'
     },
     preventPropagation: function(e) {
+        log.trace(this._banner + ':preventPropagation');
         e.stopPropagation();
     },
     clicktest: function (e) {
-        log.trace(this.jsclass + ':clicktest');
-        this.preventPropagation(e);
-        if (!this.model.get('selected')) { 
-            $(e.currentTarget).css('background-color','green');
-            this.model.set('selected',true);
-        } else {
-            $(e.currentTarget).css('background-color','');
-            this.model.set('selected',false);
-        }
+        log.trace(this._banner + ':clicktest');
+        e.stopPropagation();
+        // if (!this.model.get('selected')) { 
+        //     $(e.currentTarget).css('background-color','green');
+        //     this.model.set('selected',true);
+        // } else {
+        //     $(e.currentTarget).css('background-color','');
+        //     this.model.set('selected',false);
+        // }
     }
 
 });

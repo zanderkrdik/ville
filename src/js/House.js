@@ -3,7 +3,7 @@
 const Structure = require('./Structure.js');
 
 const MView = Structure.extend({
-    jsclass: 'Structure|House',
+    jsclass: 'House',
     className: 'structure house',
 });
 
