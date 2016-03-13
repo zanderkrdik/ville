@@ -50,7 +50,7 @@ const MView = Marionette.LayoutView.extend({
 
         let requestedPos = element.model.get('pos');
         let wScalingFactor = (this.model.get('width') / this.model.get('scale'))/2;
-        let hScalingFactor = (this.model.get('width') / this.model.get('scale'))/2;
+        let hScalingFactor = (this.model.get('height') / this.model.get('scale'))/2;
         
         // Tell the shildren what to listen to
         element.listenTo(this, 'render', () => {
@@ -66,17 +66,15 @@ const MView = Marionette.LayoutView.extend({
 
     },
     zoomin: function() {
-        console.log('PlayingField.zoomin');
         let scale = this.model.get('scale');
-        console.log(scale);
-        this.model.set('scale',scale * 2);
+        console.log('PlayingField.zoomin [%s]', scale);
+        this.model.set('scale',scale / 2);
         this.render();
     },
     zoomout: function() {
-        console.log('PlayingField.zoomout');
         let scale = this.model.get('scale');
-        console.log(scale);
-        this.model.set('scale',scale / 2);
+        console.log('PlayingField.zoomout [%s]', scale);
+        this.model.set('scale',scale * 2);
         this.render();
     },
     events: {
@@ -110,6 +108,9 @@ const MView = Marionette.LayoutView.extend({
         if (!ctx) {
             throw new Error('PlayingField.MView._drawgrid: No canvas context found. Init error?');
         }
+        
+        //clear any previously drawn elements
+        ctx.clearRect(0,0,uW,uH);
         
         // Columns
         for (let i = uX; i < uW; i = i + uX) {

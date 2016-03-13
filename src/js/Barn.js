@@ -7,7 +7,7 @@ const Structure = require('./Structure.js');
 const MView = Structure.extend({
     jsclass: 'Structure|Barn',
     className: 'structure barn',
-        clicktest: function (e) {
+    clicktest: function (e) {
         console.log(this.jsclass + ':clicktest');
         this.preventPropagation(e);
         if (!this.model.get('selected')) {
