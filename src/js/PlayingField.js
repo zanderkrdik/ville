@@ -63,7 +63,7 @@ const MView = Marionette.LayoutView.extend({
                 width: this.$el.width(),
                 height: this.$el.height(),
             }
-        })
+        });
     },
     add: function (element, pos) {
         if (!element || !pos) {

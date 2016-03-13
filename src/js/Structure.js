@@ -13,7 +13,7 @@ const Model = Backbone.Model.extend({
         jsclass: 'Structure'
     },
     initialize: function () {
-        this._banner = ''
+        this._banner = '';
         //log.trace(this.get('jsclass') + '.model.init');
     }
 });
